@@ -29,6 +29,11 @@ int Entity::GetX()
 {
 	return  x;
 }
+int Entity::GetY()
+{
+	return  y;
+}
+
 int Entity::Y()
 {
 	return  y;
@@ -43,7 +48,7 @@ int Entity::H()
 }
 
 //function to get the hp value
-int Entity::HP() 
+int Entity::HP()
 {
 	return hp;
 }
@@ -66,4 +71,13 @@ void Entity::Move(int dx, int dy)
 {
 	x += dx * speed;
 	y += dy * speed;
+}
+
+void Entity::SetX(int posx)
+{
+	x = posx;
+}
+void Entity::SetY(int posy)
+{
+	y = posy;
 }

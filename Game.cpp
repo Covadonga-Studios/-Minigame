@@ -29,6 +29,32 @@ bool Game::Init()
 	for (int i = 0; i < MAX_KEYS; ++i)
 		keys[i] = KEY_IDLE;
 
+	//Load images
+	if (!LoadImages())
+		return false;
+
+	// Init SDL_Mixer
+	int flags = MIX_INIT_OGG;
+	if (Mix_Init(flags) != flags) {
+		SDL_Log("Failed to init OGG module for SDL_Mixer!\n");
+		SDL_Log("Mix_Init: %s\n", Mix_GetError());
+		return false;
+	}
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
+		SDL_Log("Failed to init SDL_Mixer!\n");
+		SDL_Log("Mix_OpenAudio: %s\n", Mix_GetError());
+		return false;
+	}
+	
+	if (!LoadAudios())
+		return false;
+
+
+	int w;
+	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
+	Scene.Init(0, 0, w, WINDOW_HEIGHT, 2);
+	
+
 	//Init variables
 	Player.Init(20, WINDOW_HEIGHT >> 1, 104, 82, 5);
 	Player2.Init(1700, WINDOW_HEIGHT >> 1, 104, 82, 5);
@@ -42,8 +68,61 @@ bool Game::Init()
 
 	return true;
 }
+
+bool Game::LoadAudios() {
+	num_tracks = 0;
+	tracks[num_tracks++] = Mix_LoadMUS("sample_ogg.ogg");
+
+	Mix_PlayMusic(tracks[0], -1);
+
+	sfxs[num_sfxs++] = Mix_LoadWAV("sample_wav.wav");
+
+	return true;
+}
+
+bool Game::LoadImages()
+{
+	if(IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
+	{
+		SDL_Log("IMG_Init, failed to init required png support: %s\n", IMG_GetError());
+		return false;
+	}
+	img_background = SDL_CreateTextureFromSurface(Renderer, IMG_Load("jaja.png"));
+	if (img_background == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship.png"));
+	if (img_player == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_shot = SDL_CreateTextureFromSurface(Renderer, IMG_Load("shot.png"));
+	if (img_shot == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	return true;
+}
 void Game::Release()
 {
+	//Release images
+	SDL_DestroyTexture(img_background);
+	SDL_DestroyTexture(img_player);
+	SDL_DestroyTexture(img_shot);
+	IMG_Quit();
+	
+	// Free Audios
+	for (int i = 0; i < num_tracks; ++i)
+		Mix_FreeMusic(tracks[i]);
+	for (int i = 0; i < num_sfxs; ++i)
+		Mix_FreeChunk(sfxs[i]);
+
+	// Close SDL_Mixer
+	Mix_CloseAudio();
+	while(Mix_Init(0))
+		Mix_Quit();
+		
 	//Clean up all SDL initialized subsystems
 	SDL_Quit();
 }
@@ -72,8 +151,6 @@ bool Game::Update()
 	//Read Input
 	if (!Input())	return true;
 
-	//Player 1
-
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
@@ -88,10 +165,15 @@ bool Game::Update()
 		Shots[idx_shot].Init(x + w - 10, y + (h >> 1) - 3, 56, 20, 10);
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
-	}
-	
 
-	//Logic
+		// Play a single Sound
+		Mix_PlayChannel(-1, sfxs[0], 0);
+	}
+
+	
+	//Scene scroll
+	Scene.Move(0, -1);
+	if (Scene.GetY() <= -Scene.H())	Scene.SetY(0);
 	//Player update
 	Player.Move(fx, fy);
 	//Shots update
@@ -133,23 +215,35 @@ bool Game::Update()
 			if (Shots2[i].GetX() > WINDOW_WIDTH)	Shots2[i].ShutDown();
 		}
 	}
-
-	
 	return false;
 }
 void Game::Draw()
 {
+	SDL_Rect rc;
+
+
+	//Scene scroll
+	Scene.Move(0, -1);
+	if (Scene.GetY() <= -Scene.H())	Scene.SetY(0);
+
+
 	//Set the color used for drawing operations
 	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
 	//Clear rendering target
 	SDL_RenderClear(Renderer);
 
+
+	//Draw scene
+	Scene.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
+	rc.x += rc.w;
+	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
+	
 	//Draw player
-	SDL_Rect rc;
 	Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 	SDL_SetRenderDrawColor(Renderer, 0, 192, 0, 255);
 	SDL_RenderFillRect(Renderer, &rc);
-
+	
 	//Draw shots
 	SDL_SetRenderDrawColor(Renderer, 192, 0, 0, 255);
 	for (int i = 0; i < MAX_SHOTS; ++i)
@@ -160,14 +254,12 @@ void Game::Draw()
 			SDL_RenderFillRect(Renderer, &rc);
 		}
 	}
-
-	
 	//Draw player2
 	SDL_Rect rc2;
 	Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
 	SDL_SetRenderDrawColor(Renderer, 0, 192, 255, 255);
 	SDL_RenderFillRect(Renderer, &rc2);
-	
+
 	//Draw shots2
 	SDL_SetRenderDrawColor(Renderer, 192, 0, 255, 255);
 	for (int i = 0; i < MAX_SHOTS2; ++i)
@@ -213,28 +305,20 @@ void Game::Draw()
 
 	//HP bars
 
-		SDL_Rect rc3{ 100, 300, 200, -Player.HP() * 30};
-
-	
-		SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
-		SDL_RenderFillRect(Renderer, &rc3);
-		
-		SDL_Rect rc4{ 1650, 300, 200, -Player2.HP() * 30 };
+	SDL_Rect rc3{ 100, 300, 200, -Player.HP() * 30 };
 
 
-		SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
-		SDL_RenderFillRect(Renderer, &rc4);
-	
+	SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(Renderer, &rc3);
+
+	SDL_Rect rc4{ 1650, 300, 200, -Player2.HP() * 30 };
+
+
+	SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(Renderer, &rc4);
 
 	//Update screen
 	SDL_RenderPresent(Renderer);
-
-	
-
-
-
-
-
 
 	SDL_Delay(10);	// 1000/10 = 100 fps max
 }

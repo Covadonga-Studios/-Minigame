@@ -1,7 +1,7 @@
 ﻿  Entity.cpp
   Game.cpp
-C:\Users\pau\Desktop\Unity\Games\TrainGameHome\Assets\Scripts\-Minigame\Game.cpp(40,2): warning C4551: la llamada a la función no tiene lista de argumentos
-C:\Users\pau\Desktop\Unity\Games\TrainGameHome\Assets\Scripts\-Minigame\Game.cpp(41,2): warning C4551: la llamada a la función no tiene lista de argumentos
+C:\Users\pau\Desktop\-Minigame\-Minigame\Game.cpp(66,2): warning C4551: la llamada a la función no tiene lista de argumentos
+C:\Users\pau\Desktop\-Minigame\-Minigame\Game.cpp(67,2): warning C4551: la llamada a la función no tiene lista de argumentos
   main.cpp
   Generando código...
-  SpriteSDL.vcxproj -> C:\Users\pau\Desktop\Unity\Games\TrainGameHome\Assets\Scripts\-Minigame\Debug\SpriteSDL.exe
+  SpriteSDL.vcxproj -> C:\Users\pau\Desktop\-Minigame\-Minigame\Debug\SpriteSDL.exe

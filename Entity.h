@@ -7,21 +7,28 @@ public:
 
 	void Init(int posx, int posy, int w, int h, int s);
 	void GetRect(int *posx, int *posy, int *w, int *h);
+	
+	void SetX(int posx);
 	int  GetX();
+
+	void SetY(int posy);
+	int GetY();
+
+	void ShutDown(); 
+	bool IsAlive();
+	void Move(int dx, int dy);
 	int	 Y();
 	int  W();
 	int  H();
 	int HP();
 	void redHP();
-	void ShutDown(); 
-	bool IsAlive();
-	void Move(int dx, int dy);
 
 private:
 	int x, y;
 	int width, height;
 	int speed;
-	int hp;
 	bool is_alive;
+	int sfx_id;
+	int hp;
 };
 
