@@ -104,7 +104,7 @@ bool Game::Update()
 		}
 	}
 
-	//Player 1
+	//Player 2
 
 //Process Input
 	int fx2 = 0, fy2 = 0;
@@ -122,11 +122,9 @@ bool Game::Update()
 		idx_shot2 %= MAX_SHOTS;
 	}
 
-
-	//Logicdd
-	//Player update
+	//Player2 update
 	Player2.Move(fx2, fy2);
-	//Shots update
+	//Shots2 update
 	for (int i = 0; i < MAX_SHOTS2; ++i)
 	{
 		if (Shots2[i].IsAlive())
@@ -170,7 +168,7 @@ void Game::Draw()
 	SDL_SetRenderDrawColor(Renderer, 0, 192, 255, 255);
 	SDL_RenderFillRect(Renderer, &rc2);
 	
-	//Draw shots
+	//Draw shots2
 	SDL_SetRenderDrawColor(Renderer, 192, 0, 255, 255);
 	for (int i = 0; i < MAX_SHOTS2; ++i)
 	{
@@ -181,11 +179,16 @@ void Game::Draw()
 		}
 	}
 
+	//Check collisions
+
+
+	//check if player1 and player2 collide
 	if (Player.GetX() < Player2.GetX() + Player2.W() && Player.GetX() + Player.W() > Player2.GetX() && Player.Y() < Player2.Y() + Player2.H() && Player.Y() + Player.H() > Player2.Y())
 	{
 		SDL_Quit();
 	}
 
+	//check if player1 gets shot
 	if (Player.GetX() < Shots2[0].GetX() + Shots2[0].W() && Player.GetX() + Player.W() > Shots2[0].GetX() && Player.Y() < Shots2[0].Y() + Shots2[0].H() && Player.Y() + Player.H() > Shots2[0].Y())
 	{
 		Player.redHP();
@@ -196,6 +199,8 @@ void Game::Draw()
 		}
 
 	}
+
+	//check if player 2 gets shot
 	if (Shots[0].GetX() < Player2.GetX() + Player2.W() && Shots[0].GetX() + Shots[0].W() > Player2.GetX() && Shots[0].Y() < Player2.Y() + Player2.H() && Shots[0].Y() + Shots[0].H() > Player2.Y())
 	{
 		Player2.redHP();
@@ -206,7 +211,9 @@ void Game::Draw()
 		}
 	}
 
-	SDL_Rect rc3{ 100, 300, 200, -Player.HP() * 30};
+	//HP bars
+
+		SDL_Rect rc3{ 100, 300, 200, -Player.HP() * 30};
 
 	
 		SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);

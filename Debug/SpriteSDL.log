@@ -1,4 +1,7 @@
-﻿  Game.cpp
-C:\Users\paums3\Documents\GitHub\-Minigame\Game.cpp(40,2): warning C4551: function call missing argument list
-C:\Users\paums3\Documents\GitHub\-Minigame\Game.cpp(41,2): warning C4551: function call missing argument list
-  SpriteSDL.vcxproj -> C:\Users\paums3\Documents\GitHub\-Minigame\Debug\SpriteSDL.exe
+﻿  Entity.cpp
+  Game.cpp
+C:\Users\pau\Desktop\Unity\Games\TrainGameHome\Assets\Scripts\-Minigame\Game.cpp(40,2): warning C4551: la llamada a la función no tiene lista de argumentos
+C:\Users\pau\Desktop\Unity\Games\TrainGameHome\Assets\Scripts\-Minigame\Game.cpp(41,2): warning C4551: la llamada a la función no tiene lista de argumentos
+  main.cpp
+  Generando código...
+  SpriteSDL.vcxproj -> C:\Users\pau\Desktop\Unity\Games\TrainGameHome\Assets\Scripts\-Minigame\Debug\SpriteSDL.exe

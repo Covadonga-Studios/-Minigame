@@ -41,10 +41,14 @@ int Entity::H()
 {
 	return  height;
 }
+
+//function to get the hp value
 int Entity::HP() 
 {
 	return hp;
 }
+
+//function to reduce hp
 void Entity::redHP()
 {
 	hp--;
