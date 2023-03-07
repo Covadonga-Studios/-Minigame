@@ -32,6 +32,7 @@ bool Game::Init()
 	//Init variables
 	Player.Init(20, WINDOW_HEIGHT >> 1, 104, 82, 5);
 	Player2.Init(1700, WINDOW_HEIGHT >> 1, 104, 82, 5);
+	HP1.Init(20, WINDOW_HEIGHT >> 1, 104, 200, 5);
 	idx_shot = 0;
 	idx_shot2 = 0;
 
@@ -180,22 +181,43 @@ void Game::Draw()
 		}
 	}
 
-	//Update screen
-	SDL_RenderPresent(Renderer);
-
 	if (Player.GetX() < Player2.GetX() + Player2.W() && Player.GetX() + Player.W() > Player2.GetX() && Player.Y() < Player2.Y() + Player2.H() && Player.Y() + Player.H() > Player2.Y())
 	{
 		SDL_Quit();
 	}
-	
+
 	if (Player.GetX() < Shots2[0].GetX() + Shots2[0].W() && Player.GetX() + Player.W() > Shots2[0].GetX() && Player.Y() < Shots2[0].Y() + Shots2[0].H() && Player.Y() + Player.H() > Shots2[0].Y())
 	{
-		SDL_Quit();
+		Player.HP();
+		if (Player.HP() <= 0)
+		{
+			SDL_Quit();
+		}
+
 	}
 	if (Shots[0].GetX() < Player2.GetX() + Player2.W() && Shots[0].GetX() + Shots[0].W() > Player2.GetX() && Shots[0].Y() < Player2.Y() + Player2.H() && Shots[0].Y() + Shots[0].H() > Player2.Y())
 	{
-		SDL_Quit();
+		Player2.HP();
+		if (Player2.HP() <= 0)
+		{
+			SDL_Quit();
+		}
 	}
+
+	SDL_Rect rc3;
+
+
+	HP1.GetRect(&rc3.x, &rc3.y, &rc3.w, &rc3.h);
+	SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(Renderer, &rc3);
+
+	//Update screen
+	SDL_RenderPresent(Renderer);
+
+	
+
+
+
 
 
 

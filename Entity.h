@@ -11,6 +11,7 @@ public:
 	int	 Y();
 	int  W();
 	int  H();
+	int HP();
 	void ShutDown(); 
 	bool IsAlive();
 	void Move(int dx, int dy);
@@ -19,6 +20,7 @@ private:
 	int x, y;
 	int width, height;
 	int speed;
+	int hp;
 	bool is_alive;
 };
 
