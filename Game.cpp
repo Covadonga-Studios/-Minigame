@@ -31,7 +31,9 @@ bool Game::Init()
 
 	//Init variables
 	Player.Init(20, WINDOW_HEIGHT >> 1, 104, 82, 5);
+	Player2.Init(1700, WINDOW_HEIGHT >> 1, 104, 82, 5);
 	idx_shot = 0;
+	idx_shot2 = 0;
 
 	//Entities textures
 	IMG_Init;
@@ -69,13 +71,15 @@ bool Game::Update()
 	//Read Input
 	if (!Input())	return true;
 
+	//Player 1
+
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
-	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT)	fy = -1;
-	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT)	fy = 1;
-	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT)	fx = -1;
-	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT)	fx = 1;
+	if (keys[SDL_SCANCODE_W] == KEY_REPEAT)	fy = -1;
+	if (keys[SDL_SCANCODE_S] == KEY_REPEAT)	fy = 1;
+	if (keys[SDL_SCANCODE_A] == KEY_REPEAT)	fx = -1;
+	if (keys[SDL_SCANCODE_D] == KEY_REPEAT)	fx = 1;
 	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
 	{
 		int x, y, w, h;
@@ -84,14 +88,7 @@ bool Game::Update()
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
 	}
-	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
-	{
-		int x, y, w,  h;
-		Player.GetRect(&x, &y, &w, &h);
-		Shots[idx_shot].Init(x + w - 10, y + (h >> 1) - 29, 56, 20, 10);
-		idx_shot++;
-		idx_shot %= MAX_SHOTS;
-	}
+	
 
 	//Logic
 	//Player update
@@ -103,6 +100,38 @@ bool Game::Update()
 		{
 			Shots[i].Move(1, 0);
 			if (Shots[i].GetX() > WINDOW_WIDTH)	Shots[i].ShutDown();
+		}
+	}
+
+	//Player 1
+
+//Process Input
+	int fx2 = 0, fy2 = 0;
+	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
+	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT)	fy2 = -1;
+	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT)	fy2 = 1;
+	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT)	fx2 = -1;
+	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT)	fx2 = 1;
+	if (keys[SDL_SCANCODE_RCTRL] == KEY_DOWN)
+	{
+		int x, y, w, h;
+		Player2.GetRect(&x, &y, &w, &h);
+		Shots2[idx_shot2].Init(x - w + 70, y + (h >> 1) - 3, 56, 20, 10);
+		idx_shot2++;
+		idx_shot2 %= MAX_SHOTS;
+	}
+
+
+	//Logic
+	//Player update
+	Player2.Move(fx2, fy2);
+	//Shots update
+	for (int i = 0; i < MAX_SHOTS2; ++i)
+	{
+		if (Shots2[i].IsAlive())
+		{
+			Shots2[i].Move(-1, 0);
+			if (Shots2[i].GetX() > WINDOW_WIDTH)	Shots2[i].ShutDown();
 		}
 	}
 		
@@ -120,7 +149,7 @@ void Game::Draw()
 	Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 	SDL_SetRenderDrawColor(Renderer, 0, 192, 0, 255);
 	SDL_RenderFillRect(Renderer, &rc);
-	
+
 	//Draw shots
 	SDL_SetRenderDrawColor(Renderer, 192, 0, 0, 255);
 	for (int i = 0; i < MAX_SHOTS; ++i)
@@ -129,6 +158,24 @@ void Game::Draw()
 		{
 			Shots[i].GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 			SDL_RenderFillRect(Renderer, &rc);
+		}
+	}
+
+	
+	//Draw player2
+	SDL_Rect rc2;
+	Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
+	SDL_SetRenderDrawColor(Renderer, 0, 192, 255, 255);
+	SDL_RenderFillRect(Renderer, &rc2);
+	
+	//Draw shots
+	SDL_SetRenderDrawColor(Renderer, 192, 0, 255, 255);
+	for (int i = 0; i < MAX_SHOTS2; ++i)
+	{
+		if (Shots2[i].IsAlive())
+		{
+			Shots2[i].GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
+			SDL_RenderFillRect(Renderer, &rc2);
 		}
 	}
 

@@ -10,6 +10,7 @@ int main(int argc, char* args[])
 	{
 		end = game.Update();
 		game.Draw();
+
 	}
 
 	game.Release();

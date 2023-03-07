@@ -26,7 +26,7 @@ void Entity::GetRect(int *posx, int *posy, int *w, int *h)
 }
 int Entity::GetX()
 {
-	return x;
+	return  x;
 }
 void Entity::ShutDown()
 {
