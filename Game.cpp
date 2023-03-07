@@ -188,7 +188,8 @@ void Game::Draw()
 
 	if (Player.GetX() < Shots2[0].GetX() + Shots2[0].W() && Player.GetX() + Player.W() > Shots2[0].GetX() && Player.Y() < Shots2[0].Y() + Shots2[0].H() && Player.Y() + Player.H() > Shots2[0].Y())
 	{
-		Player.HP();
+		Player.redHP();
+		Shots2[0].Move(0, 1000);
 		if (Player.HP() <= 0)
 		{
 			SDL_Quit();
@@ -197,19 +198,26 @@ void Game::Draw()
 	}
 	if (Shots[0].GetX() < Player2.GetX() + Player2.W() && Shots[0].GetX() + Shots[0].W() > Player2.GetX() && Shots[0].Y() < Player2.Y() + Player2.H() && Shots[0].Y() + Shots[0].H() > Player2.Y())
 	{
-		Player2.HP();
+		Player2.redHP();
+		Shots[0].Move(0, 1000);
 		if (Player2.HP() <= 0)
 		{
 			SDL_Quit();
 		}
 	}
 
-	SDL_Rect rc3;
+	SDL_Rect rc3{ 100, 300, 200, -Player.HP() * 30};
+
+	
+		SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
+		SDL_RenderFillRect(Renderer, &rc3);
+		
+		SDL_Rect rc4{ 1650, 300, 200, -Player2.HP() * 30 };
 
 
-	HP1.GetRect(&rc3.x, &rc3.y, &rc3.w, &rc3.h);
-	SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
-	SDL_RenderFillRect(Renderer, &rc3);
+		SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
+		SDL_RenderFillRect(Renderer, &rc4);
+	
 
 	//Update screen
 	SDL_RenderPresent(Renderer);

@@ -16,7 +16,7 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	height = h;
 	speed = s;
 	is_alive = true;
-	hp = 100;
+	hp = 10;
 }
 void Entity::GetRect(int *posx, int *posy, int *w, int *h)
 {
@@ -43,9 +43,11 @@ int Entity::H()
 }
 int Entity::HP() 
 {
-	hp--;
-
 	return hp;
+}
+void Entity::redHP()
+{
+	hp--;
 }
 void Entity::ShutDown()
 {

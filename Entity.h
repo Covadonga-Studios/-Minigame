@@ -12,6 +12,7 @@ public:
 	int  W();
 	int  H();
 	int HP();
+	void redHP();
 	void ShutDown(); 
 	bool IsAlive();
 	void Move(int dx, int dy);
