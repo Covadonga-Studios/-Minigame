@@ -12,8 +12,8 @@
 #define WINDOW_WIDTH	1920
 #define WINDOW_HEIGHT	1080
 #define MAX_KEYS		256
-#define MAX_SHOTS		32
-#define MAX_SHOTS2		32
+#define MAX_SHOTS		1
+#define MAX_SHOTS2		1
 
 class Game
 {

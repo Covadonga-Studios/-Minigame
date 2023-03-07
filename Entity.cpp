@@ -28,6 +28,18 @@ int Entity::GetX()
 {
 	return  x;
 }
+int Entity::Y()
+{
+	return  y;
+}
+int Entity::W()
+{
+	return  width;
+}
+int Entity::H()
+{
+	return  height;
+}
 void Entity::ShutDown()
 {
 	is_alive = false;

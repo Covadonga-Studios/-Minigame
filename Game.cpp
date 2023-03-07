@@ -122,7 +122,7 @@ bool Game::Update()
 	}
 
 
-	//Logic
+	//Logicdd
 	//Player update
 	Player2.Move(fx2, fy2);
 	//Shots update
@@ -134,7 +134,8 @@ bool Game::Update()
 			if (Shots2[i].GetX() > WINDOW_WIDTH)	Shots2[i].ShutDown();
 		}
 	}
-		
+
+	
 	return false;
 }
 void Game::Draw()
@@ -181,6 +182,22 @@ void Game::Draw()
 
 	//Update screen
 	SDL_RenderPresent(Renderer);
+
+	if (Player.GetX() < Player2.GetX() + Player2.W() && Player.GetX() + Player.W() > Player2.GetX() && Player.Y() < Player2.Y() + Player2.H() && Player.Y() + Player.H() > Player2.Y())
+	{
+		SDL_Quit();
+	}
+	
+	if (Player.GetX() < Shots2[0].GetX() + Shots2[0].W() && Player.GetX() + Player.W() > Shots2[0].GetX() && Player.Y() < Shots2[0].Y() + Shots2[0].H() && Player.Y() + Player.H() > Shots2[0].Y())
+	{
+		SDL_Quit();
+	}
+	if (Shots[0].GetX() < Player2.GetX() + Player2.W() && Shots[0].GetX() + Shots[0].W() > Player2.GetX() && Shots[0].Y() < Player2.Y() + Player2.H() && Shots[0].Y() + Shots[0].H() > Player2.Y())
+	{
+		SDL_Quit();
+	}
+
+
 
 	SDL_Delay(10);	// 1000/10 = 100 fps max
 }
