@@ -43,6 +43,8 @@ private:
 	Entity Player2, Shots2[MAX_SHOTS2];
 	Entity HP1;
 	Entity HP2;
+	Entity objects;
+	Entity objects2;
 	int idx_shot;
 	int idx_shot2;
 
