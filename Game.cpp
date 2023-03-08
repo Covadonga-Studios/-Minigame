@@ -75,7 +75,7 @@ bool Game::LoadAudios() {
 
 	Mix_PlayMusic(tracks[0], -1);
 
-	sfxs[num_sfxs++] = Mix_LoadWAV("buarababuam.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("disparo.wav");
 
 	return true;
 }
@@ -168,10 +168,10 @@ bool Game::Update()
 	{
 		int x, y, w, h;
 		Player.GetRect(&x, &y, &w, &h);
-		Shots[idx_shot].Init(x + w - 10, y + (h >> 1) - 3, 56, 20, 10);
+		Shots[idx_shot].Init(x + w - 10, y + (h >> 1) - 3, 30, 15, 15);
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
-		//////////
+
 
 
 		// Play a single Sound
@@ -180,7 +180,7 @@ bool Game::Update()
 
 	
 	//Scene scroll
-	Scene.Move(0, -1);
+	Scene.Move(0, -0.5);
 	if (Scene.GetY() <= -Scene.H())	Scene.SetY(0);
 	//Player update
 	Player.Move(fx, fy);
@@ -201,15 +201,17 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
 	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT)	fy2 = -1;
 	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT)	fy2 = 1;
-	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 700)	fx2 = -1;
+	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 820)	fx2 = -1;
 	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT)	fx2 = 1;
 	if (keys[SDL_SCANCODE_RCTRL] == KEY_DOWN)
 	{
 		int x, y, w, h;
 		Player2.GetRect(&x, &y, &w, &h);
-		Shots2[idx_shot2].Init(x - w + 70, y + (h >> 1) - 3, 56, 20, 10);
+		Shots2[idx_shot2].Init(x - w + 70, y + (h >> 1) - 3, 30, 15, 15);
 		idx_shot2++;
 		idx_shot2 %= MAX_SHOTS;
+
+		Mix_PlayChannel(-1, sfxs[0], 0);
 	}
 
 	//Player2 update
@@ -314,13 +316,13 @@ void Game::Draw()
 
 	//HP bars
 
-	SDL_Rect rc3{ 100, 300, 200, -Player.HP() * 30 };
+	SDL_Rect rc3{ 50, 300, 100, -Player.HP() * 30 };
 
 
 	SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
 	SDL_RenderFillRect(Renderer, &rc3);
 
-	SDL_Rect rc4{ 1350, 300, 200, -Player2.HP() * 30 };
+	SDL_Rect rc4{ 1370, 300, 100, -Player2.HP() * 30 };
 
 
 	SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
@@ -330,4 +332,6 @@ void Game::Draw()
 	SDL_RenderPresent(Renderer);
 
 	SDL_Delay(10);	// 1000/10 = 100 fps max
+	
+
 }

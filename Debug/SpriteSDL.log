@@ -1,4 +1,5 @@
 ﻿  Game.cpp
 C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Game.cpp(66,2): warning C4551: la llamada a la función no tiene lista de argumentos
 C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Game.cpp(67,2): warning C4551: la llamada a la función no tiene lista de argumentos
+C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Game.cpp(183,17): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
   SpriteSDL.vcxproj -> C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Debug\SpriteSDL.exe
