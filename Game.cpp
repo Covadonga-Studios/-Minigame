@@ -236,7 +236,7 @@ void Game::Draw()
 	//Draw scene
 	Scene.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
-	rc.x += rc.w;
+	rc.y += rc.h;
 	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
 	
 	//Draw player
