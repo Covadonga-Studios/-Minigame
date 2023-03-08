@@ -57,7 +57,7 @@ bool Game::Init()
 
 	//Init variables
 	Player.Init(20, WINDOW_HEIGHT >> 1, 104, 82, 5);
-	Player2.Init(1700, WINDOW_HEIGHT >> 1, 104, 82, 5);
+	Player2.Init(1400, WINDOW_HEIGHT >> 1, 104, 82, 5);
 	HP1.Init(20, WINDOW_HEIGHT >> 1, 104, 200, 5);
 	idx_shot = 0;
 	idx_shot2 = 0;
@@ -157,7 +157,7 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_W] == KEY_REPEAT)	fy = -1;
 	if (keys[SDL_SCANCODE_S] == KEY_REPEAT)	fy = 1;
 	if (keys[SDL_SCANCODE_A] == KEY_REPEAT)	fx = -1;
-	if (keys[SDL_SCANCODE_D] == KEY_REPEAT)	fx = 1;
+	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 680 - Player.W())	fx = 1;
 	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
 	{
 		int x, y, w, h;
@@ -193,7 +193,7 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
 	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT)	fy2 = -1;
 	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT)	fy2 = 1;
-	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT)	fx2 = -1;
+	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 700)	fx2 = -1;
 	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT)	fx2 = 1;
 	if (keys[SDL_SCANCODE_RCTRL] == KEY_DOWN)
 	{
@@ -311,7 +311,7 @@ void Game::Draw()
 	SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
 	SDL_RenderFillRect(Renderer, &rc3);
 
-	SDL_Rect rc4{ 1650, 300, 200, -Player2.HP() * 30 };
+	SDL_Rect rc4{ 1350, 300, 200, -Player2.HP() * 30 };
 
 
 	SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);

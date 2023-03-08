@@ -1,3 +1,4 @@
 C:\Users\ivomo\OneDrive\Escritorio\AudioSDL-main\AudioSDL-main\AudioSDL\Debug\SpriteSDL.exe
 C:\Users\pau\Desktop\-Minigame\-Minigame\Debug\SpriteSDL.exe
 C:\Users\pau\Desktop\-Minigame\-Minigame\Debug\SpriteSDL.pdb
+C:\Users\paums3\Documents\GitHub\-Minigame\Debug\SpriteSDL.exe
