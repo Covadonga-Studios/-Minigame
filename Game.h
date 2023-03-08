@@ -37,7 +37,7 @@ public:
 private:
 	SDL_Window *Window;
 	SDL_Renderer *Renderer;
-	SDL_Texture *img_background, *img_player, *img_shot;
+	SDL_Texture* img_background, * img_player, * img_shot, * img_player2;
 
 	Entity Player, Shots[MAX_SHOTS], Scene;
 	Entity Player2, Shots2[MAX_SHOTS2];

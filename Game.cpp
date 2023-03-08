@@ -71,11 +71,11 @@ bool Game::Init()
 
 bool Game::LoadAudios() {
 	num_tracks = 0;
-	tracks[num_tracks++] = Mix_LoadMUS("sample_ogg.ogg");
+	tracks[num_tracks++] = Mix_LoadMUS("western.ogg");
 
 	Mix_PlayMusic(tracks[0], -1);
 
-	sfxs[num_sfxs++] = Mix_LoadWAV("sample_wav.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("buarababuam.wav");
 
 	return true;
 }
@@ -87,12 +87,17 @@ bool Game::LoadImages()
 		SDL_Log("IMG_Init, failed to init required png support: %s\n", IMG_GetError());
 		return false;
 	}
-	img_background = SDL_CreateTextureFromSurface(Renderer, IMG_Load("jaja.png"));
+	img_background = SDL_CreateTextureFromSurface(Renderer, IMG_Load("paisaje2.png"));
 	if (img_background == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
-	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship.png"));
+	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("player1.png"));
+	if (img_player == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_player2 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("player2.png"));
 	if (img_player == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
@@ -109,6 +114,7 @@ void Game::Release()
 	//Release images
 	SDL_DestroyTexture(img_background);
 	SDL_DestroyTexture(img_player);
+	SDL_DestroyTexture(img_player2);
 	SDL_DestroyTexture(img_shot);
 	IMG_Quit();
 	
@@ -165,6 +171,8 @@ bool Game::Update()
 		Shots[idx_shot].Init(x + w - 10, y + (h >> 1) - 3, 56, 20, 10);
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
+		//////////
+
 
 		// Play a single Sound
 		Mix_PlayChannel(-1, sfxs[0], 0);
@@ -239,10 +247,11 @@ void Game::Draw()
 	rc.y += rc.h;
 	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
 	
-	//Draw player
+	//Draw player1
 	Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	SDL_SetRenderDrawColor(Renderer, 0, 192, 0, 255);
-	SDL_RenderFillRect(Renderer, &rc);
+	SDL_RenderCopy(Renderer, img_player, NULL, &rc);
+	rc.y += rc.h;
+	
 	
 	//Draw shots
 	SDL_SetRenderDrawColor(Renderer, 192, 0, 0, 255);
@@ -257,8 +266,8 @@ void Game::Draw()
 	//Draw player2
 	SDL_Rect rc2;
 	Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
-	SDL_SetRenderDrawColor(Renderer, 0, 192, 255, 255);
-	SDL_RenderFillRect(Renderer, &rc2);
+	SDL_RenderCopy(Renderer, img_player2, NULL, &rc2);
+	rc2.y += rc2.h;
 
 	//Draw shots2
 	SDL_SetRenderDrawColor(Renderer, 192, 0, 255, 255);
