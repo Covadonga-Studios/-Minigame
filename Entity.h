@@ -22,6 +22,13 @@ public:
 	int  H();
 	int HP();
 	void redHP();
+	void addtimer();
+	int timer1();
+	void addtimer2();
+	int timmer2();
+	int randoom(int rando);
+	int randoom2(int rando);
+	void resettimer(int timerr);
 
 private:
 	int x, y;
@@ -30,5 +37,12 @@ private:
 	bool is_alive;
 	int sfx_id;
 	int hp;
+	int timer;
+	int timer2;
+	int random1;
+	int random2;
+	int subrandom1;
+	int subrandom2;
+	int objectid;
 };
 

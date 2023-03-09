@@ -1,7 +1,10 @@
 #include "Game.h"
+#include <time.h>
+#include <stdlib.h>
 
 int main(int argc, char* args[])
 {
+	srand(time(NULL));
 	Game game;
 	if (!game.Init()) return -1;
 

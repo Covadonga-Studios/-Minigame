@@ -1,5 +1,6 @@
 #include "Entity.h"
-
+#include <time.h>
+#include <stdlib.h>
 
 Entity::Entity()
 {
@@ -7,6 +8,7 @@ Entity::Entity()
 }
 Entity::~Entity()
 {
+
 }
 void Entity::Init(int posx, int posy, int w, int h, int s) 
 {
@@ -17,6 +19,10 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	speed = s;
 	is_alive = true;
 	hp = 10;
+	random1 = rand() % 100 + 10;
+	random2 = rand() % 100 + 10;
+	subrandom1 = rand() % 550 + 200;
+	subrandom2 = rand() % 750 + 700;
 }
 void Entity::GetRect(int *posx, int *posy, int *w, int *h)
 {
@@ -46,13 +52,11 @@ int Entity::H()
 {
 	return  height;
 }
-
 //function to get the hp value
 int Entity::HP()
 {
 	return hp;
 }
-
 //function to reduce hp
 void Entity::redHP()
 {
@@ -66,13 +70,11 @@ bool Entity::IsAlive()
 {
 	return is_alive;
 }
-
 void Entity::Move(int dx, int dy)
 {
 	x += dx * speed;
 	y += dy * speed;
 }
-
 void Entity::SetX(int posx)
 {
 	x = posx;
@@ -80,4 +82,57 @@ void Entity::SetX(int posx)
 void Entity::SetY(int posy)
 {
 	y = posy;
+}
+void Entity::addtimer() 
+{
+	timer++;
+}
+int Entity::timer1() 
+{
+	return timer;
+}
+void Entity::addtimer2()
+{
+	timer2++;
+}
+int Entity::timmer2()
+{
+	return timer2;
+}
+int Entity::randoom(int rando) 
+{
+	if (rando == 1) 
+	{
+		return random1;
+	}
+	else 
+	{
+		x = subrandom1;
+		return x;
+	}
+	
+}
+int Entity::randoom2(int rando) 
+{
+	if (rando == 1)
+	{
+		return random2;
+	}
+	else
+	{
+		x = subrandom2;
+		return x;
+	}
+}
+
+void Entity::resettimer(int timerr) 
+{
+	if (timerr == 1)
+	{
+		timer = 0;
+	}
+	else 
+	{
+		timer2 = 0;
+	}
 }

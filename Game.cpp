@@ -1,5 +1,7 @@
 #include "Game.h"
 #include <math.h>
+#include <time.h>
+#include <stdlib.h>
 
 Game::Game() {}
 Game::~Game(){}
@@ -61,8 +63,11 @@ bool Game::Init()
 	HP1.Init(20, WINDOW_HEIGHT >> 1, 104, 200, 5);
 	idx_shot = 0;
 	idx_shot2 = 0;
-	objects.Init(20, WINDOW_HEIGHT >> 1, 104, 200, 5);
+	objects.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
+	objects2.Init(1000, WINDOW_HEIGHT >> 5, 50, 50, 1);
+	Uint32 callback(2000);
 
+	
 	//Entities textures
 	IMG_Init;
 	SDL_CreateTextureFromSurface;
@@ -161,9 +166,9 @@ bool Game::Update()
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
-	if (keys[SDL_SCANCODE_W] == KEY_REPEAT)	fy = -1;
-	if (keys[SDL_SCANCODE_S] == KEY_REPEAT)	fy = 1;
-	if (keys[SDL_SCANCODE_A] == KEY_REPEAT)	fx = -1;
+	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 85 - Player.H())	fy = -1;
+	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 980 - Player.H())	fy = 1;
+	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 0)	fx = -1;
 	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 680 - Player.W())	fx = 1;
 	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
 	{
@@ -199,12 +204,12 @@ bool Game::Update()
 
 //Process Input
 	int fx2 = 0, fy2 = 0;
-	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
-	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT)	fy2 = -1;
-	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT)	fy2 = 1;
+	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN )	return true;
+	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 85 - Player2.H())	fy2 = -1;
+	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 980 - Player2.H())	fy2 = 1;
 	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 820)	fx2 = -1;
-	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT)	fx2 = 1;
-	if (keys[SDL_SCANCODE_RCTRL] == KEY_DOWN)
+	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1420)fx2 = 1;
+	if (keys[SDL_SCANCODE_RSHIFT] == KEY_DOWN)
 	{
 		int x, y, w, h;
 		Player2.GetRect(&x, &y, &w, &h);
@@ -230,6 +235,8 @@ bool Game::Update()
 }
 void Game::Draw()
 {
+	objects.addtimer();
+	objects2.addtimer2();
 	SDL_Rect rc;
 
 
@@ -315,16 +322,56 @@ void Game::Draw()
 		}
 	}
 
+	//Power-up/obstacle spawner
 
-	SDL_Rect rc5;
-	objects.GetRect(&rc5.x, &rc5.y, &rc5.w, &rc5.h);
-
-	if (keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
+	if (objects.timer1() >  objects.randoom(1))
 	{
-		SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
+		objects.Move(0, 1);
+		SDL_Rect rc5;
+		rc5.x = objects.randoom(0);
+		objects.GetRect(&rc5.x, &rc5.y, &rc5.w, &rc5.h);
+		
 		SDL_RenderFillRect(Renderer, &rc5);
 	}
 
+	if (objects2.timmer2() > objects2.randoom2(1))
+	{
+		objects2.Move(0, 1);
+		SDL_Rect rc6;
+		rc6.x = objects2.randoom2(0);
+		objects2.GetRect(&rc6.x, &rc6.y, &rc6.w, &rc6.h);
+
+		SDL_RenderFillRect(Renderer, &rc6);
+	}
+
+	//Power-up/obstacle despawner
+
+	if (objects.GetY() > 1020) 
+	{
+		objects.resettimer(1);
+		
+
+		objects.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
+	}
+
+	if (objects2.GetY() > 1020) 
+	{
+		objects2.resettimer(0);
+		
+
+		objects2.Init(1000, WINDOW_HEIGHT >> 5, 50, 50, 1);
+	}
+
+	if (Player.GetX() < objects.GetX() + objects.W() && Player.GetX() + Player.W() > objects.GetX() && Player.Y() < objects.Y() + objects.H() && Player.Y() + Player.H() > objects.Y())
+	{
+		objects.resettimer(1);
+		objects.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
+	}
+	if (Player2.GetX() < objects2.GetX() + objects2.W() && Player2.GetX() + Player.W() > objects2.GetX() && Player2.Y() < objects2.Y() + objects2.H() && Player2.Y() + Player2.H() > objects2.Y())
+	{
+		objects2.resettimer(0);
+		objects2.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
+	}
 	//HP bars
 
 	SDL_Rect rc3{ 50, 300, 100, -Player.HP() * 30 };
