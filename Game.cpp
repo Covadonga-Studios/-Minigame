@@ -61,6 +61,7 @@ bool Game::Init()
 	HP1.Init(20, WINDOW_HEIGHT >> 1, 104, 200, 5);
 	idx_shot = 0;
 	idx_shot2 = 0;
+	objects.Init(20, WINDOW_HEIGHT >> 1, 104, 200, 5);
 
 	//Entities textures
 	IMG_Init;
@@ -312,6 +313,16 @@ void Game::Draw()
 		{
 			SDL_Quit();
 		}
+	}
+
+
+	SDL_Rect rc5;
+	objects.GetRect(&rc5.x, &rc5.y, &rc5.w, &rc5.h);
+
+	if (keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
+	{
+		SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
+		SDL_RenderFillRect(Renderer, &rc5);
 	}
 
 	//HP bars
