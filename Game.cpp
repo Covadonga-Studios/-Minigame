@@ -67,6 +67,8 @@ bool Game::Init()
 	objects2.Init(1000, WINDOW_HEIGHT >> 5, 50, 50, 1);
 	objects.setid();
 	objects2.setid();
+	Player2.settimer(101);
+	Player.settimer(101);
 
 
 	
@@ -86,7 +88,7 @@ bool Game::LoadAudios() {
 	sfxs[num_sfxs++] = Mix_LoadWAV("disparo.wav");
 
 	return true;
-}
+}	
 
 bool Game::LoadImages()
 {
@@ -167,7 +169,8 @@ bool Game::Update()
 	//Read Input
 	if (!Input())	return true;
 
-	
+	Player2.addtimer();
+	Player.addtimer();
 
 	//Process Input
 	int fx = 0, fy = 0;
@@ -176,7 +179,7 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 980 - Player.H())	fy = 1;
 	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 0)	fx = -1;
 	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 680 - Player.W())	fx = 1;
-	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
+	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN && Player.timer1() > 120)
 	{
 		int x, y, w, h;
 		Player.GetRect(&x, &y, &w, &h);
@@ -184,7 +187,7 @@ bool Game::Update()
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
 
-
+		Player.settimer(0);
 
 		// Play a single Sound
 		Mix_PlayChannel(-1, sfxs[0], 0);
@@ -219,15 +222,15 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 980 - Player2.H())	fy2 = 1;
 	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 820)	fx2 = -1;
 	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1420)fx2 = 1;
-	if (keys[SDL_SCANCODE_RSHIFT] == KEY_DOWN)
+	if (keys[SDL_SCANCODE_RSHIFT] == KEY_DOWN && Player2.timer1() > 120)
 	{
 		int x, y, w, h;
 		Player2.GetRect(&x, &y, &w, &h);
 		Shots2[idx_shot2].Init(x - w + 70, y + (h >> 1) - 3, 30, 15, 15);
 		idx_shot2++;
 		idx_shot2 %= MAX_SHOTS;
-
-
+		
+		Player2.settimer(0);
 
 		Mix_PlayChannel(-1, sfxs[0], 0);
 	}
@@ -240,7 +243,7 @@ bool Game::Update()
 		if (Shots2[i].IsAlive())
 		{
 			Shots2[i].Move(-1, 0);
-			if (Shots2[i].GetX() > WINDOW_WIDTH) 
+			if (Shots2[i].GetX() < 0 )
 			{
 				Shots2[i].ShutDown();
 				objects2.pickedupp(0);

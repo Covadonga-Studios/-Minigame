@@ -167,3 +167,7 @@ void Entity::addhp()
 {
 	hp++;
 }
+void Entity::settimer(int timerr) 
+{
+	timer = timerr;
+}

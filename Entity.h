@@ -29,6 +29,7 @@ public:
 	int randoom(int rando);
 	int randoom2(int rando);
 	void resettimer(int timerr);
+	void settimer(int timerr);
 	void setid();
 	int getid();
 	bool ispicked();
