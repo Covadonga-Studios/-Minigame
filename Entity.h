@@ -35,6 +35,8 @@ public:
 	bool ispicked();
 	void pickedupp(int is);
 	void addhp();
+	void setanim(int frame);
+	int animm();
 
 
 
@@ -53,5 +55,6 @@ private:
 	int subrandom2;
 	int objectid;
 	bool pickedup;
+	int anim;
 };
 

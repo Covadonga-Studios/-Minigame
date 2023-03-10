@@ -23,7 +23,7 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	random2 = rand() % 100 + 10;
 	subrandom1 = rand() % 550 + 200;
 	subrandom2 = rand() % 750 + 700;
-	
+	anim = 0;
 }
 void Entity::GetRect(int *posx, int *posy, int *w, int *h)
 {
@@ -170,4 +170,14 @@ void Entity::addhp()
 void Entity::settimer(int timerr) 
 {
 	timer = timerr;
+}
+void Entity::setanim(int frame) {
+
+	anim = frame;
+
+}
+int Entity::animm() {
+
+	return anim;
+
 }
