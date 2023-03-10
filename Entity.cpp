@@ -23,6 +23,7 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	random2 = rand() % 100 + 10;
 	subrandom1 = rand() % 550 + 200;
 	subrandom2 = rand() % 750 + 700;
+	
 }
 void Entity::GetRect(int *posx, int *posy, int *w, int *h)
 {
@@ -135,4 +136,34 @@ void Entity::resettimer(int timerr)
 	{
 		timer2 = 0;
 	}
+}
+void Entity::setid() 
+{
+	objectid = rand() % 2 + 1;
+}
+
+int Entity::getid() 
+{
+	return objectid;
+}
+
+bool Entity::ispicked() 
+{
+	return pickedup;
+}
+void Entity::pickedupp(int is) 
+{
+	if (is == 0) 
+	{
+		pickedup = 0;
+	}
+	else 
+	{
+		pickedup = 1;
+	}
+}
+
+void Entity::addhp() 
+{
+	hp++;
 }

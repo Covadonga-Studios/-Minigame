@@ -13,7 +13,7 @@
 #include "Entity.h"
 
 #define WINDOW_WIDTH	1520
-#define WINDOW_HEIGHT	980
+#define WINDOW_HEIGHT	900
 #define MAX_KEYS		256
 #define MAX_SHOTS		1
 #define MAX_SHOTS2		1

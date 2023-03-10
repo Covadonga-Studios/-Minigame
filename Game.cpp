@@ -65,7 +65,9 @@ bool Game::Init()
 	idx_shot2 = 0;
 	objects.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
 	objects2.Init(1000, WINDOW_HEIGHT >> 5, 50, 50, 1);
-	Uint32 callback(2000);
+	objects.setid();
+	objects2.setid();
+
 
 	
 	//Entities textures
@@ -124,6 +126,8 @@ void Game::Release()
 	SDL_DestroyTexture(img_shot);
 	IMG_Quit();
 	
+
+
 	// Free Audios
 	for (int i = 0; i < num_tracks; ++i)
 		Mix_FreeMusic(tracks[i]);
@@ -163,6 +167,8 @@ bool Game::Update()
 	//Read Input
 	if (!Input())	return true;
 
+	
+
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
@@ -196,7 +202,11 @@ bool Game::Update()
 		if (Shots[i].IsAlive())
 		{
 			Shots[i].Move(1, 0);
-			if (Shots[i].GetX() > WINDOW_WIDTH)	Shots[i].ShutDown();
+			if (Shots[i].GetX() > WINDOW_WIDTH) 
+			{
+				Shots[i].ShutDown();
+				objects.pickedupp(0);
+			}
 		}
 	}
 
@@ -217,6 +227,8 @@ bool Game::Update()
 		idx_shot2++;
 		idx_shot2 %= MAX_SHOTS;
 
+
+
 		Mix_PlayChannel(-1, sfxs[0], 0);
 	}
 
@@ -228,7 +240,12 @@ bool Game::Update()
 		if (Shots2[i].IsAlive())
 		{
 			Shots2[i].Move(-1, 0);
-			if (Shots2[i].GetX() > WINDOW_WIDTH)	Shots2[i].ShutDown();
+			if (Shots2[i].GetX() > WINDOW_WIDTH) 
+			{
+				Shots2[i].ShutDown();
+				objects2.pickedupp(0);
+
+			}
 		}
 	}
 	return false;
@@ -264,7 +281,29 @@ void Game::Draw()
 	
 	
 	//Draw shots
-	SDL_SetRenderDrawColor(Renderer, 192, 0, 0, 255);
+	if (objects.ispicked() == 1) 
+	{
+		switch (objects.getid())
+		{
+		case 1:
+			SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
+			break;
+		case 2:
+			SDL_SetRenderDrawColor(Renderer, 255, 255, 0, 255);
+			break;
+
+		default:
+
+			break;
+		}
+	}
+	else 
+	{
+		SDL_SetRenderDrawColor(Renderer, 192, 0, 0, 255);
+	}
+	
+
+
 	for (int i = 0; i < MAX_SHOTS; ++i)
 	{
 		if (Shots[i].IsAlive())
@@ -280,7 +319,28 @@ void Game::Draw()
 	rc2.y += rc2.h;
 
 	//Draw shots2
-	SDL_SetRenderDrawColor(Renderer, 192, 0, 255, 255);
+
+	if (objects2.ispicked() == 1)
+	{
+		switch (objects2.getid())
+		{
+		case 1:
+			SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
+			break;
+		case 2:
+			SDL_SetRenderDrawColor(Renderer, 255, 255, 0, 255);
+			break;
+
+		default:
+
+			break;
+		}
+	}
+	else 
+	{
+		SDL_SetRenderDrawColor(Renderer, 192, 0, 255, 255);
+	}
+	 
 	for (int i = 0; i < MAX_SHOTS2; ++i)
 	{
 		if (Shots2[i].IsAlive())
@@ -302,7 +362,31 @@ void Game::Draw()
 	//check if player1 gets shot
 	if (Player.GetX() < Shots2[0].GetX() + Shots2[0].W() && Player.GetX() + Player.W() > Shots2[0].GetX() && Player.Y() < Shots2[0].Y() + Shots2[0].H() && Player.Y() + Player.H() > Shots2[0].Y())
 	{
-		Player.redHP();
+
+		if (objects2.ispicked() == 1)
+		{
+			switch (objects2.getid())
+			{
+			case 1:
+				Player.redHP();
+				Player.redHP();
+				objects2.pickedupp(0);
+				objects2.setid();
+				break;
+
+
+
+
+			default:
+				Player.redHP();
+				break;
+			}
+		}
+		else
+		{
+			Player.redHP();
+		}
+		
 		Shots2[0].Move(0, 1000);
 		if (Player.HP() <= 0)
 		{
@@ -314,7 +398,27 @@ void Game::Draw()
 	//check if player 2 gets shot
 	if (Shots[0].GetX() < Player2.GetX() + Player2.W() && Shots[0].GetX() + Shots[0].W() > Player2.GetX() && Shots[0].Y() < Player2.Y() + Player2.H() && Shots[0].Y() + Shots[0].H() > Player2.Y())
 	{
-		Player2.redHP();
+		if (objects.ispicked() == 1)
+		{
+			switch (objects.getid())
+			{
+			case 1:
+				Player2.redHP();
+				Player2.redHP();
+				objects.pickedupp(0);
+				objects.setid();
+				break;
+
+			default:
+				Player2.redHP();
+				break;
+			}
+		}
+		else 
+		{
+			Player2.redHP();
+		}
+
 		Shots[0].Move(0, 1000);
 		if (Player2.HP() <= 0)
 		{
@@ -330,6 +434,19 @@ void Game::Draw()
 		SDL_Rect rc5;
 		rc5.x = objects.randoom(0);
 		objects.GetRect(&rc5.x, &rc5.y, &rc5.w, &rc5.h);
+		switch (objects.getid())
+		{
+		case 1:
+			SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
+			break;
+		case 2:
+			SDL_SetRenderDrawColor(Renderer, 255, 255, 0, 255);
+			break;
+
+		default:
+			
+			break;
+		}
 		
 		SDL_RenderFillRect(Renderer, &rc5);
 	}
@@ -340,7 +457,19 @@ void Game::Draw()
 		SDL_Rect rc6;
 		rc6.x = objects2.randoom2(0);
 		objects2.GetRect(&rc6.x, &rc6.y, &rc6.w, &rc6.h);
+		switch (objects2.getid())
+		{
+		case 1:
+			SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
+			break;
+		case 2:
+			SDL_SetRenderDrawColor(Renderer, 255, 255, 0, 255);
+			break;
 
+		default:
+
+			break;
+		}
 		SDL_RenderFillRect(Renderer, &rc6);
 	}
 
@@ -349,7 +478,7 @@ void Game::Draw()
 	if (objects.GetY() > 1020) 
 	{
 		objects.resettimer(1);
-		
+			
 
 		objects.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
 	}
@@ -360,16 +489,51 @@ void Game::Draw()
 		
 
 		objects2.Init(1000, WINDOW_HEIGHT >> 5, 50, 50, 1);
+		
 	}
 
 	if (Player.GetX() < objects.GetX() + objects.W() && Player.GetX() + Player.W() > objects.GetX() && Player.Y() < objects.Y() + objects.H() && Player.Y() + Player.H() > objects.Y())
 	{
 		objects.resettimer(1);
+
+		switch (objects.getid())
+		{
+		case 1:
+			objects.pickedupp(1);
+			break;
+		case 2:
+			Player.addhp();
+			objects.pickedupp(0);
+			objects.setid();
+			break;
+
+		default:
+
+			break;
+		}
+
 		objects.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
 	}
 	if (Player2.GetX() < objects2.GetX() + objects2.W() && Player2.GetX() + Player.W() > objects2.GetX() && Player2.Y() < objects2.Y() + objects2.H() && Player2.Y() + Player2.H() > objects2.Y())
 	{
 		objects2.resettimer(0);
+
+		switch (objects2.getid())
+		{
+		case 1:
+			objects2.pickedupp(1);
+			break;
+		case 2:
+			Player2.addhp();
+			objects2.pickedupp(0);
+			objects2.setid();
+			break;
+
+		default:
+
+			break;
+		}
+
 		objects2.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
 	}
 	//HP bars

@@ -29,6 +29,13 @@ public:
 	int randoom(int rando);
 	int randoom2(int rando);
 	void resettimer(int timerr);
+	void setid();
+	int getid();
+	bool ispicked();
+	void pickedupp(int is);
+	void addhp();
+
+
 
 private:
 	int x, y;
@@ -44,5 +51,6 @@ private:
 	int subrandom1;
 	int subrandom2;
 	int objectid;
+	bool pickedup;
 };
 
