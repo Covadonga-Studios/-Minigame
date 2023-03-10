@@ -1,5 +1,1 @@
-﻿  Game.cpp
-C:\Users\paums3\My project\-Minigame\Game.cpp(76,2): warning C4551: function call missing argument list
-C:\Users\paums3\My project\-Minigame\Game.cpp(77,2): warning C4551: function call missing argument list
-C:\Users\paums3\My project\-Minigame\Game.cpp(198,17): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  SpriteSDL.vcxproj -> C:\Users\paums3\My project\-Minigame\Debug\SpriteSDL.exe
+﻿  SpriteSDL.vcxproj -> C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Debug\SpriteSDL.exe
