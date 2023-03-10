@@ -1,5 +1,9 @@
-﻿  Game.cpp
-C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Game.cpp(76,2): warning C4551: la llamada a la función no tiene lista de argumentos
-C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Game.cpp(77,2): warning C4551: la llamada a la función no tiene lista de argumentos
-C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Game.cpp(222,17): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
-  SpriteSDL.vcxproj -> C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Debug\SpriteSDL.exe
+﻿  Entity.cpp
+  Game.cpp
+C:\Users\pau\Desktop\-Minigame\-Minigame\Game.cpp(76,2): warning C4551: la llamada a la función no tiene lista de argumentos
+C:\Users\pau\Desktop\-Minigame\-Minigame\Game.cpp(77,2): warning C4551: la llamada a la función no tiene lista de argumentos
+C:\Users\pau\Desktop\-Minigame\-Minigame\Game.cpp(198,17): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+  main.cpp
+C:\Users\pau\Desktop\-Minigame\-Minigame\main.cpp(7,12): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+  Generando código...
+  SpriteSDL.vcxproj -> C:\Users\pau\Desktop\-Minigame\-Minigame\Debug\SpriteSDL.exe

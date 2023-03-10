@@ -81,11 +81,11 @@ bool Game::Init()
 
 bool Game::LoadAudios() {
 	num_tracks = 0;
-	tracks[num_tracks++] = Mix_LoadMUS("STK_western.ogg");
+	tracks[num_tracks++] = Mix_LoadMUS("western.ogg");
 
 	Mix_PlayMusic(tracks[0], -1);
 
-	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_shot.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("disparo.wav");
 
 	return true;
 }	
@@ -102,38 +102,18 @@ bool Game::LoadImages()
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
+	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("player1.png"));
+	if (img_player == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_player2 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("player2.png"));
+	if (img_player == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
 	img_shot = SDL_CreateTextureFromSurface(Renderer, IMG_Load("shot.png"));
 	if (img_shot == NULL) {
-		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
-		return false;
-	}
-	img_player1_F1 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("IMG_player1_F1"));
-	if (img_player1_F1 == NULL) {
-		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
-		return false;
-	}
-	img_player1_F2 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("IMG_player1_F2"));
-	if (img_player1_F2 == NULL) {
-		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
-		return false;
-	}
-	img_player1_F3 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("IMG_player1_F3"));
-	if (img_player1_F3 == NULL) {
-		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
-		return false;
-	}
-	img_player2_F1 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("IMG_player2_F1"));
-	if (img_player2_F1 == NULL) {
-		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
-		return false;
-	}
-	img_player2_F2 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("IMG_player2_F2"));
-	if (img_player2_F2 == NULL) {
-		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
-		return false;
-	}
-	img_player2_F3 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("IMG_player2_F3"));
-	if (img_player2_F3 == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
@@ -143,13 +123,9 @@ void Game::Release()
 {
 	//Release images
 	SDL_DestroyTexture(img_background);
+	SDL_DestroyTexture(img_player);
+	SDL_DestroyTexture(img_player2);
 	SDL_DestroyTexture(img_shot);
-	SDL_DestroyTexture(img_player1_F1);
-	SDL_DestroyTexture(img_player1_F2);
-	SDL_DestroyTexture(img_player1_F3);
-	SDL_DestroyTexture(img_player2_F1);
-	SDL_DestroyTexture(img_player2_F2);
-	SDL_DestroyTexture(img_player2_F3);
 	IMG_Quit();
 	
 
@@ -282,21 +258,7 @@ void Game::Draw()
 	objects.addtimer();
 	objects2.addtimer2();
 	SDL_Rect rc;
-	SDL_Rect rc2;
-	SDL_Rect rc1_1;
-	SDL_Rect rc1_2;
-	SDL_Rect rc1_3;
-	
-	//Draw player1
-	Player.GetRect(&rc1_1.x, &rc1_1.y, &rc1_1.w, &rc1_1.h);
-	SDL_RenderCopy(Renderer, img_player1_F1, NULL, &rc1_1);
-	rc1_1.y += rc1_1.h;
-	Player.GetRect(&rc1_2.x, &rc1_2.y, &rc1_2.w, &rc1_2.h);
-	SDL_RenderCopy(Renderer, img_player1_F2, NULL, &rc1_2);
-	rc1_2.y += rc1_2.h;
-	Player.GetRect(&rc1_3.x, &rc1_3.y, &rc1_3.w, &rc1_3.h);
-	SDL_RenderCopy(Renderer, img_player1_F3, NULL, &rc1_3);
-	rc1_3.y += rc1_3.h;
+
 
 	//Scene scroll
 	Scene.Move(0, -1);
@@ -314,6 +276,11 @@ void Game::Draw()
 	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
 	rc.y += rc.h;
 	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
+	
+	//Draw player1
+	Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+	SDL_RenderCopy(Renderer, img_player, NULL, &rc);
+	rc.y += rc.h;
 	
 	
 	//Draw shots
@@ -349,18 +316,10 @@ void Game::Draw()
 		}
 	}
 	//Draw player2
-	SDL_Rect rc2_1;
-	SDL_Rect rc2_2;
-	SDL_Rect rc2_3;
-	Player2.GetRect(&rc2_1.x, &rc2_1.y, &rc2_1.w, &rc2_1.h);
-	SDL_RenderCopy(Renderer, img_player2_F1, NULL, &rc2_1);
-	rc2_1.y += rc2_1.h;
-	Player2.GetRect(&rc2_2.x, &rc2_2.y, &rc2_2.w, &rc2_2.h);
-	SDL_RenderCopy(Renderer, img_player2_F2, NULL, &rc2_2);
-	rc2_2.y += rc2_2.h;
-	Player2.GetRect(&rc2_3.x, &rc2_3.y, &rc2_3.w, &rc2_3.h);
-	SDL_RenderCopy(Renderer, img_player2_F3, NULL, &rc2_3);
-	rc2_3.y += rc2_3.h;
+	SDL_Rect rc2;
+	Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
+	SDL_RenderCopy(Renderer, img_player2, NULL, &rc2);
+	rc2.y += rc2.h;
 
 	//Draw shots2
 

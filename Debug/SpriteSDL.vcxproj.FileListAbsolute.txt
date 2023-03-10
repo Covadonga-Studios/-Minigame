@@ -5,3 +5,5 @@ C:\Users\paums3\Documents\GitHub\-Minigame\Debug\SpriteSDL.exe
 C:\Users\danielbp6\Documents\GitHub\-Minigame\Debug\SpriteSDL.exe
 C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Debug\SpriteSDL.exe
 C:\Users\paums3\My project\-Minigame\Debug\SpriteSDL.exe
+C:\Users\pau\Desktop\-Minigame-f95f3d33e17cd63823709511836972361fcf0a9b\-Minigame-f95f3d33e17cd63823709511836972361fcf0a9b\Debug\SpriteSDL.exe
+C:\Users\pau\Desktop\-Minigame-f95f3d33e17cd63823709511836972361fcf0a9b\-Minigame-f95f3d33e17cd63823709511836972361fcf0a9b\Debug\SpriteSDL.pdb
