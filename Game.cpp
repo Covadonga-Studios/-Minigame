@@ -83,11 +83,11 @@ bool Game::Init()
 
 bool Game::LoadAudios() {
 	num_tracks = 0;
-	tracks[num_tracks++] = Mix_LoadMUS("western.ogg");
+	tracks[num_tracks++] = Mix_LoadMUS("STK_western.ogg");
 
 	Mix_PlayMusic(tracks[0], -1);
 
-	sfxs[num_sfxs++] = Mix_LoadWAV("disparo.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_shot.wav");
 
 	return true;
 }	
@@ -202,8 +202,8 @@ bool Game::Update()
 	}
 	
 	//Scene scroll
-	Scene.Move(0, -0.5);
-	if (Scene.GetY() <= -Scene.H())	Scene.SetY(0);
+	Scene.Move(0, 2);
+	if (Scene.GetY() == Scene.H())	Scene.SetY(0);
 	//Player update
 	Player.Move(fx, fy);
 	//Shots update
@@ -286,7 +286,7 @@ void Game::Draw()
 	SDL_Rect rc2t3{ 4672,1166,259, 778 };
 	//Scene scroll
 	Scene.Move(0, -1);
-	if (Scene.GetY() <= -Scene.H())	Scene.SetY(0);
+	if (Scene.GetY() <= -Scene.H())	Scene.SetY(900);
 
 
 	//Set the color used for drawing operations
@@ -298,7 +298,7 @@ void Game::Draw()
 	//Draw scene
 	Scene.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
-	rc.y += rc.h;
+	rc.y -= rc.h;
 	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
 	
 	//Draw player1
