@@ -22,7 +22,7 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	random1 = rand() % 100 + 10;
 	random2 = rand() % 100 + 10;
 	subrandom1 = rand() % 500 + 200;
-	subrandom2 = rand() % 735 + 720;
+	subrandom2 = rand() % 730 + 720;
 	anim = 0;
 	extraframe = -3;
 	roll = 0;
