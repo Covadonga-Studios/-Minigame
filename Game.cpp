@@ -14,7 +14,7 @@ bool Game::Init()
 		return false;
 	}
 	//Create our window: title, x, y, w, h, flags
-	Window = SDL_CreateWindow("Spaceship: arrow keys + space", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	Window = SDL_CreateWindow("Wild showdown", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	if (Window == NULL)
 	{
 		SDL_Log("Unable to create window: %s", SDL_GetError());
@@ -58,7 +58,7 @@ bool Game::Init()
 	
 
 	//Init variables
-	Player.Init(20, WINDOW_HEIGHT >> 1, 217, 220, 5);
+	Player.Init(20, WINDOW_HEIGHT >> 1, 60, 180, 5);
 	Player2.Init(1400, WINDOW_HEIGHT >> 1, 217, 220, 5);
 	HP1.Init(20, WINDOW_HEIGHT >> 1, 104, 200, 5);
 	idx_shot = 0;
@@ -69,7 +69,8 @@ bool Game::Init()
 	objects2.setid();
 	Player2.settimer(101);
 	Player.settimer(101);
-
+	Player.settimer2(360);
+	Player2.settimer2(360);
 
 	
 	//Entities textures
@@ -102,12 +103,12 @@ bool Game::LoadImages()
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
-	img_player1_F1 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("IMG_player1_F1.png"));
+	img_player1_F1 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spritesheet.png"));
 	if (img_player1_F1 == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
-	img_player1_F2 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("IMG_player1_F2.png"));
+	/*img_player1_F2 = SDL_CreateTextureFromSurface(Renderer, IMG_Load("IMG_player1_F2.png"));
 	if (img_player1_F2 == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
@@ -141,7 +142,7 @@ bool Game::LoadImages()
 	if (img_player2_F4 == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
-	}
+	}*/
 	return true;
 }
 
@@ -151,13 +152,13 @@ void Game::Release()
 	SDL_DestroyTexture(img_shot);
 	SDL_DestroyTexture(img_background);
 	SDL_DestroyTexture(img_player1_F1);
-	SDL_DestroyTexture(img_player1_F2);
+	/*SDL_DestroyTexture(img_player1_F2);
 	SDL_DestroyTexture(img_player1_F3);
 	SDL_DestroyTexture(img_player1_F4);
 	SDL_DestroyTexture(img_player2_F1);
 	SDL_DestroyTexture(img_player2_F2);
 	SDL_DestroyTexture(img_player2_F3);
-	SDL_DestroyTexture(img_player2_F4);
+	SDL_DestroyTexture(img_player2_F4);*/
 	IMG_Quit();
 	
 
@@ -204,6 +205,9 @@ bool Game::Update()
 	Player2.addtimer();
 	Player.addtimer();
 
+	Player.addtimer2();
+	Player2.addtimer2();
+
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
@@ -211,6 +215,12 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 980 - Player.H())	fy = 1;
 	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 0)	fx = -1;
 	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 680 - Player.W())	fx = 1;
+	if (keys[SDL_SCANCODE_Q] == KEY_DOWN && Player.isrolling() == 0 && Player.timmer2() > 360) 
+	{
+		Player.setroll(1);
+		Player.resettimer(2);
+	}
+		
 	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN && Player.timer1() > 120)
 	{
 		int x, y, w, h;
@@ -225,6 +235,10 @@ bool Game::Update()
 		Mix_PlayChannel(-1, sfxs[0], 0);
 	}
 
+	if (Player.timmer2() > 120 && Player.isrolling() == 1) 
+	{
+		Player.setroll(0);
+	}
 	
 	//Scene scroll
 	Scene.Move(0, -0.5);
@@ -254,6 +268,11 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 980 - Player2.H())	fy2 = 1;
 	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 820)	fx2 = -1;
 	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1420)fx2 = 1;
+	if (keys[SDL_SCANCODE_RETURN] == KEY_DOWN && Player2.isrolling() == 0 && Player2.timmer2() > 360)
+	{
+		Player2.setroll(1);
+		Player2.resettimer(2);
+	}
 	if (keys[SDL_SCANCODE_RSHIFT] == KEY_DOWN && Player2.timer1() > 120)
 	{
 		int x, y, w, h;
@@ -265,6 +284,11 @@ bool Game::Update()
 		Player2.settimer(0);
 
 		Mix_PlayChannel(-1, sfxs[0], 0);
+	}
+
+	if (Player2.timmer2() > 120 && Player2.isrolling() == 1)
+	{
+		Player2.setroll(0);
 	}
 
 	//Player2 update
@@ -290,8 +314,10 @@ void Game::Draw()
 	objects.addtimer();
 	objects2.addtimer2();
 	SDL_Rect rc;
-
-
+	SDL_Rect rct{ 1,769,1289, 4441};
+	SDL_Rect rct1{ 1393,739,1281, 4505};
+	SDL_Rect rct2{ 2737,673,1313, 4625};
+	SDL_Rect rct3{ 4273,681,1281, 4529};
 	//Scene scroll
 	Scene.Move(0, -1);
 	if (Scene.GetY() <= -Scene.H())	Scene.SetY(0);
@@ -314,27 +340,60 @@ void Game::Draw()
 	{
 	case 0:
 		Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-		SDL_RenderCopy(Renderer, img_player1_F1, NULL, &rc);
+		
+		SDL_RenderCopy(Renderer, img_player1_F1, &rct, &rc);
 		rc.y += rc.h;
-		Player.setanim(1);
+		if (Player.extrafram() == 1) 
+		{
+			Player.setanim(1);
+			Player.addframe(-5);
+		}
+		Player.addframe(1);
 		break;
 	case 1:
 		Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-		SDL_RenderCopy(Renderer, img_player1_F2, NULL, &rc);
+	
+		SDL_RenderCopy(Renderer, img_player1_F1, &rct1, &rc);
 		rc.y += rc.h;
-		Player.setanim(2);
+		/*Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		SDL_RenderCopy(Renderer, img_player1_F2, NULL, &rc);
+		rc.y += rc.h;*/
+		if (Player.extrafram() == 1)
+		{
+			Player.setanim(2);
+			Player.addframe(-5);
+		}
+		Player.addframe(1);
 		break;
 	case 2:
 		Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-		SDL_RenderCopy(Renderer, img_player1_F3, NULL, &rc);
+		
+		SDL_RenderCopy(Renderer, img_player1_F1, &rct2, &rc);
 		rc.y += rc.h;
-		Player.setanim(3);
+		/*Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		SDL_RenderCopy(Renderer, img_player1_F3, NULL, &rc);
+		rc.y += rc.h;*/
+		if (Player.extrafram() == 1)
+		{
+			Player.setanim(3);
+			Player.addframe(-5);
+		}
+		Player.addframe(1);
 		break;
 	case 3:
 		Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-		SDL_RenderCopy(Renderer, img_player1_F4, NULL, &rc);
+	
+		SDL_RenderCopy(Renderer, img_player1_F1, &rct, &rc);
 		rc.y += rc.h;
-		Player.setanim(0);
+	/*	Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		SDL_RenderCopy(Renderer, img_player1_F4, NULL, &rc);*/
+		//rc.y += rc.h;
+		if (Player.extrafram() == 1)
+		{
+			Player.setanim(0);
+			Player.addframe(-5);
+		}
+		Player.addframe(1);
 		break;
 	default:
 
@@ -381,27 +440,27 @@ void Game::Draw()
 	switch (Player2.animm())
 	{
 	case 0:
-		Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
+		/*Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
 		SDL_RenderCopy(Renderer, img_player2_F1, NULL, &rc2);
-		rc2.y += rc2.h;
+		rc2.y += rc2.h;*/
 		Player2.setanim(1);
 		break;
 	case 1:
-		Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
+		/*Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
 		SDL_RenderCopy(Renderer, img_player2_F2, NULL, &rc2);
-		rc2.y += rc2.h;
+		rc2.y += rc2.h;*/
 		Player2.setanim(2);
 		break;
 	case 2:
-		Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
+		/*Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
 		SDL_RenderCopy(Renderer, img_player2_F3, NULL, &rc2);
-		rc2.y += rc2.h;
+		rc2.y += rc2.h;*/
 		Player2.setanim(3);
 		break;
 	case 3:
-		Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
+		/*Player2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
 		SDL_RenderCopy(Renderer, img_player2_F4, NULL, &rc2);
-		rc2.y += rc2.h;
+		rc2.y += rc2.h;*/
 		Player2.setanim(0);
 		break;
 	default:
@@ -450,7 +509,7 @@ void Game::Draw()
 	}
 
 	//check if player1 gets shot
-	if (Player.GetX() < Shots2[0].GetX() + Shots2[0].W() && Player.GetX() + Player.W() > Shots2[0].GetX() && Player.Y() < Shots2[0].Y() + Shots2[0].H() && Player.Y() + Player.H() > Shots2[0].Y())
+	if (Player.GetX() < Shots2[0].GetX() + Shots2[0].W() && Player.GetX() + Player.W() > Shots2[0].GetX() && Player.Y() < Shots2[0].Y() + Shots2[0].H() && Player.Y() + Player.H() > Shots2[0].Y() && Player.isrolling() == 0)
 	{
 
 		if (objects2.ispicked() == 1)

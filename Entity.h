@@ -30,6 +30,7 @@ public:
 	int randoom2(int rando);
 	void resettimer(int timerr);
 	void settimer(int timerr);
+	void settimer2(int timerr);
 	void setid();
 	int getid();
 	bool ispicked();
@@ -37,7 +38,10 @@ public:
 	void addhp();
 	void setanim(int frame);
 	int animm();
-
+	void addframe(int extra);
+	int extrafram();
+	void setroll(bool rolls);
+	bool isrolling();
 
 
 private:
@@ -56,5 +60,7 @@ private:
 	int objectid;
 	bool pickedup;
 	int anim;
+	int extraframe;
+	bool roll;
 };
 

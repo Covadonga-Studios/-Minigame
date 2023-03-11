@@ -21,9 +21,11 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	hp = 10;
 	random1 = rand() % 100 + 10;
 	random2 = rand() % 100 + 10;
-	subrandom1 = rand() % 550 + 200;
-	subrandom2 = rand() % 750 + 700;
+	subrandom1 = rand() % 500 + 200;
+	subrandom2 = rand() % 735 + 720;
 	anim = 0;
+	extraframe = -3;
+	roll = 0;
 }
 void Entity::GetRect(int *posx, int *posy, int *w, int *h)
 {
@@ -171,6 +173,10 @@ void Entity::settimer(int timerr)
 {
 	timer = timerr;
 }
+void Entity::settimer2(int timerr) 
+{
+	timer2 = timerr;
+}
 void Entity::setanim(int frame) {
 
 	anim = frame;
@@ -180,4 +186,20 @@ int Entity::animm() {
 
 	return anim;
 
+}
+void Entity::addframe( int extra) 
+{
+	extraframe += extra;
+}
+int Entity::extrafram() 
+{
+	return extraframe;
+}
+bool Entity::isrolling() 
+{
+	return roll;
+}
+void Entity::setroll(bool rolls) 
+{
+	roll = rolls;
 }
