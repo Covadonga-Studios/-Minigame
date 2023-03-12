@@ -19,7 +19,7 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	height = h;
 	speed = s;
 	is_alive = true;
-	hp = 4;
+	hp = 5;
 	random1 = rand() % 1400 + 400;
 	random2 = rand() % 1400 + 400;
 	subrandom1 = rand() % 350 + 201;

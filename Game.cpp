@@ -63,10 +63,10 @@ bool Game::Init()
 	HP1.Init(20, WINDOW_HEIGHT >> 1, 104, 200, 5);
 	idx_shot = 0;
 	idx_shot2 = 0;
-	objects.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
-	objects2.Init(1000, WINDOW_HEIGHT >> 5, 50, 50, 1);
-	rounds1.Init(50, 650, 100, 100, 1);
-	rounds2.Init(1350, 650, 100, 100, 1);
+	objects.Init(300, -50, 50, 50, 1);
+	objects2.Init(1000, -50, 50, 50, 1);
+	rounds1.Init(5, 680, 100, 100, 1);
+	rounds2.Init(1415, 680, 100, 100, 1);
 	objects.setid();
 	objects2.setid();
 	Player2.settimer(101);
@@ -178,8 +178,8 @@ bool Game::Update()
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
-	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 85 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fy = -1;
-	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 980 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fy = 1;
+	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 180 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fy = -1;
+	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 900 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fy = 1;
 	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 200 && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fx = -1;
 	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 580 - Player.W() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fx = 1;
 	if (keys[SDL_SCANCODE_Q] == KEY_DOWN && Player.isrolling() == 0 && Player.timmer2() > 360 && Player.isdead() == 0 && Player2.isdead() == 0)
@@ -248,8 +248,8 @@ bool Game::Update()
 //Process Input
 	int fx2 = 0, fy2 = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN )	return true;
-	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 85 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fy2 = -1;
-	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 980 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fy2 = 1;
+	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 180 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fy2 = -1;
+	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 900 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fy2 = 1;
 	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 965 && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fx2 = -1;
 	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1280 && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)fx2 = 1;
 	if (keys[SDL_SCANCODE_P] == KEY_DOWN && Player2.isrolling() == 0 && Player2.timmer2() > 360 && Player2.isdead() == 0 && Player.isdead() == 0)
@@ -935,8 +935,8 @@ void Game::Draw()
 		SDL_Rect rc5;
 		rc5.x = objects.randoom(0);
 		objects.GetRect(&rc5.x, &rc5.y, &rc5.w, &rc5.h);
-		SDL_Rect rc5t{ 3311, 3323, 167,173};
-		SDL_Rect rc52t{3529,3331,181,163};
+		SDL_Rect rc5t{ 3364, 3372, 67, 72};
+		SDL_Rect rc52t{ 3459, 3382, 51, 51};
 		switch (objects.getid())
 		{
 		case 1:
@@ -960,8 +960,8 @@ void Game::Draw()
 		SDL_Rect rc6;
 		rc6.x = objects2.randoom2(0);
 		objects2.GetRect(&rc6.x, &rc6.y, &rc6.w, &rc6.h);
-		SDL_Rect rc6t{ 3311, 3323, 167,173 };
-		SDL_Rect rc62t{ 3529,3331,181,163 };
+		SDL_Rect rc6t{ 3364, 3372, 67, 72 };
+		SDL_Rect rc62t{ 3459, 3382, 51, 51 };
 		switch (objects2.getid())
 		{
 		case 1:
@@ -1055,29 +1055,33 @@ void Game::Draw()
 	}
 	//HP bars
 
-	SDL_Rect rc3{ 30, 750, 150, 100 };
-	SDL_Rect rc31{ 1831, 1419, 501, 257};
-	SDL_Rect rc32{ 1833, 1743, 511, 249 };
-	SDL_Rect rc33{ 1833, 2045, 503, 249 };
-	SDL_Rect rc34{ 1833, 2367, 505, 249 };
-	SDL_Rect rc35{ 1833, 2655, 499, 249 };
+	SDL_Rect rc3{ 10, 790, 200, 100 };
+	SDL_Rect rc31{ 1836, 1172, 600, 200};
+	SDL_Rect rc32{ 1836, 1484, 600, 200};
+	SDL_Rect rc33{ 1836, 1796, 600, 200};
+	SDL_Rect rc34{ 1836, 2108, 600, 200};
+	SDL_Rect rc35{ 1836, 2420, 600, 200};
+	SDL_Rect rc36{ 1836, 2732, 600, 200};
 
 	switch (Player.HP())
 	{
-	case 4:
+	case 5:
 		SDL_RenderCopy(Renderer, img_player1_F1, &rc31, &rc3);
 		break;
-	case 3:
+	case 4:
 		SDL_RenderCopy(Renderer, img_player1_F1, &rc32, &rc3);
 		break;
-	case 2:
+	case 3:
 		SDL_RenderCopy(Renderer, img_player1_F1, &rc33, &rc3);
 		break;
-	case 1:
+	case 2:
 		SDL_RenderCopy(Renderer, img_player1_F1, &rc34, &rc3);
 		break;
-	case 0:
+	case 1:
 		SDL_RenderCopy(Renderer, img_player1_F1, &rc35, &rc3);
+		break;
+	case 0:
+		SDL_RenderCopy(Renderer, img_player1_F1, &rc36, &rc3);
 		break;
 	default:
 
@@ -1086,30 +1090,33 @@ void Game::Draw()
 
 	
 
-	SDL_Rect rc4{ 1330, 750, 150, 100};
-	SDL_Rect rc41{ 2711, 1419, 501, 287 };
-	SDL_Rect rc42{ 2711, 1743, 511, 289 };
-	SDL_Rect rc43{ 2711, 2045, 503, 289 };
-	SDL_Rect rc44{ 2711, 2367, 505, 289 };
-	SDL_Rect rc45{ 2711, 2655, 499, 289 };
-
+	SDL_Rect rc4{ 1310, 790, 200, 100};
+	SDL_Rect rc41{ 2607, 1172, 600, 200 };
+	SDL_Rect rc42{ 2607, 1484, 600, 200 };
+	SDL_Rect rc43{ 2607, 1796, 600, 200 };
+	SDL_Rect rc44{ 2607, 2108, 600, 200 };
+	SDL_Rect rc45{ 2607, 2420, 600, 200 };
+	SDL_Rect rc46{ 2607, 2732, 600, 200 };
 
 	switch (Player2.HP())
 	{
-	case 4:
+	case 5:
 		SDL_RenderCopy(Renderer, img_player1_F1, &rc41, &rc4);
 		break;
-	case 3:
+	case 4:
 		SDL_RenderCopy(Renderer, img_player1_F1, &rc42, &rc4);
 		break;
-	case 2:
+	case 3:
 		SDL_RenderCopy(Renderer, img_player1_F1, &rc43, &rc4);
 		break;
-	case 1:
+	case 2:
 		SDL_RenderCopy(Renderer, img_player1_F1, &rc44, &rc4);
 		break;
-	case 0:
+	case 1:
 		SDL_RenderCopy(Renderer, img_player1_F1, &rc45, &rc4);
+		break;
+	case 0:
+		SDL_RenderCopy(Renderer, img_player1_F1, &rc46, &rc4);
 		break;
 	default:
 
