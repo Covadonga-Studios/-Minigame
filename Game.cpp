@@ -867,6 +867,7 @@ void Game::Draw()
 			switch (objects2.getid())
 			{
 			case 1:
+				Mix_PlayChannel(-1, sfxs[6], 0);
 				Player.redHP();
 				Player.redHP();
 				objects2.pickedupp(0);
@@ -904,6 +905,7 @@ void Game::Draw()
 			switch (objects.getid())
 			{
 			case 1:
+				Mix_PlayChannel(-1, sfxs[6], 0);
 				Player2.redHP();
 				Player2.redHP();
 				objects.pickedupp(0);
