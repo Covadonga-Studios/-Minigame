@@ -58,13 +58,14 @@ bool Game::Init()
 	
 
 	//Init variables
-	Player.Init(20, WINDOW_HEIGHT >> 1, 60, 180, 5);
-	Player2.Init(1400, WINDOW_HEIGHT >> 1, 60, 180, 5);
+	Player.Init(201, WINDOW_HEIGHT >> 1, 60, 180, 5);
+	Player2.Init(1200, WINDOW_HEIGHT >> 1, 60, 180, 5);
 	HP1.Init(20, WINDOW_HEIGHT >> 1, 104, 200, 5);
 	idx_shot = 0;
 	idx_shot2 = 0;
 	objects.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
 	objects2.Init(1000, WINDOW_HEIGHT >> 5, 50, 50, 1);
+	rounds1.Init(50, 750, 100, 100, 1);
 	objects.setid();
 	objects2.setid();
 	Player2.settimer(101);
@@ -172,24 +173,28 @@ bool Game::Update()
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
-	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 85 - Player.H())	fy = -1;
-	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 980 - Player.H())	fy = 1;
-	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 0)	fx = -1;
-	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 680 - Player.W())	fx = 1;
+	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 85 - Player.H() && Player.isrolling() == 0)	fy = -1;
+	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 980 - Player.H() && Player.isrolling() == 0)	fy = 1;
+	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 200 && Player.isrolling() == 0)	fx = -1;
+	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 580 - Player.W() && Player.isrolling() == 0)	fx = 1;
 	if (keys[SDL_SCANCODE_Q] == KEY_DOWN && Player.isrolling() == 0 && Player.timmer2() > 360) 
 	{
 		Player.setroll(1);
 		Player.resettimer(2);
 	}
+	if (keys[SDL_SCANCODE_R] == KEY_DOWN) 
+	{
+
+	}
 		
-	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN && Player.timer1() > 120)
+	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN && Player.timer1() > 120 && Player.isrolling() == 0 && Player.getbullets() < 6)
 	{
 		int x, y, w, h;
 		Player.GetRect(&x, &y, &w, &h);
 		Shots[idx_shot].Init(x + w - 10, y + (h >> 1) - 3, 30, 15, 15);
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
-
+		Player.addbullets(1);
 		Player.settimer(0);
 
 		// Play a single Sound
@@ -225,16 +230,16 @@ bool Game::Update()
 //Process Input
 	int fx2 = 0, fy2 = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN )	return true;
-	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 85 - Player2.H())	fy2 = -1;
-	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 980 - Player2.H())	fy2 = 1;
-	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 820)	fx2 = -1;
-	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1420)fx2 = 1;
-	if (keys[SDL_SCANCODE_RETURN] == KEY_DOWN && Player2.isrolling() == 0 && Player2.timmer2() > 360)
+	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 85 - Player2.H() && Player2.isrolling() == 0)	fy2 = -1;
+	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 980 - Player2.H() && Player2.isrolling() == 0)	fy2 = 1;
+	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 965 && Player2.isrolling() == 0)	fx2 = -1;
+	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1280 && Player2.isrolling() == 0)fx2 = 1;
+	if (keys[SDL_SCANCODE_P] == KEY_DOWN && Player2.isrolling() == 0 && Player2.timmer2() > 360)
 	{
 		Player2.setroll(1);
 		Player2.resettimer(2);
 	}
-	if (keys[SDL_SCANCODE_RSHIFT] == KEY_DOWN && Player2.timer1() > 120)
+	if (keys[SDL_SCANCODE_RSHIFT] == KEY_DOWN && Player2.timer1() > 120 && Player2.isrolling() == 0) 
 	{
 		int x, y, w, h;
 		Player2.GetRect(&x, &y, &w, &h);
@@ -280,10 +285,22 @@ void Game::Draw()
 	SDL_Rect rct2{ 1047,979,269, 890 };
 	SDL_Rect rct3{ 1339,985,259, 865 };
 
+	SDL_Rect rctroll{ 275,3943,379, 969};
+	SDL_Rect rct1roll{ 659,4767,519,993};
+	SDL_Rect rct2roll{ 1145,3939,367, 969 };
+	SDL_Rect rct3roll{ 1697,4781,377, 957 };
+
+
 	SDL_Rect rc2t{ 3849,1151,263, 793 };
 	SDL_Rect rc2t1{ 4139,1149,266, 795 };
 	SDL_Rect rc2t2{ 4410,1159,258, 785 };
 	SDL_Rect rc2t3{ 4672,1166,259, 778 };
+
+
+	SDL_Rect rctroll2{ 4749,4107,379, 971};
+	SDL_Rect rct1roll2{ 4271,4927,523,997 };
+	SDL_Rect rct2roll2{ 3941,4105,363, 971 };
+	SDL_Rect rct3roll2{ 3383,4951,369, 953 };
 	//Scene scroll
 	Scene.Move(0, -1);
 	if (Scene.GetY() <= -Scene.H())	Scene.SetY(900);
@@ -302,77 +319,62 @@ void Game::Draw()
 	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
 	
 	//Draw player1
-	switch (Player.animm())
-	{
-	case 0:
-		Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-		
-		SDL_RenderCopy(Renderer, img_player1_F1, &rct, &rc);
-		rc.y += rc.h;
-		if (Player.extrafram() == 1) 
-		{
-			Player.setanim(1);
-			Player.addframe(-5);
-		}
-		Player.addframe(1);
-		break;
-	case 1:
-		Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	
-		SDL_RenderCopy(Renderer, img_player1_F1, &rct1, &rc);
-		rc.y += rc.h;
-		
-		if (Player.extrafram() == 1)
-		{
-			Player.setanim(2);
-			Player.addframe(-5);
-		}
-		Player.addframe(1);
-		break;
-	case 2:
-		Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-		
-		SDL_RenderCopy(Renderer, img_player1_F1, &rct2, &rc);
-		rc.y += rc.h;
-		
-		if (Player.extrafram() == 1)
-		{
-			Player.setanim(3);
-			Player.addframe(-5);
-		}
-		Player.addframe(1);
-		break;
-	case 3:
-		Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	
-		SDL_RenderCopy(Renderer, img_player1_F1, &rct3, &rc);
-		rc.y += rc.h;
-	
-		if (Player.extrafram() == 1)
-		{
-			Player.setanim(0);
-			Player.addframe(-5);
-		}
-		Player.addframe(1);
-		break;
-	default:
 
-		break;
-	}
-	
-	
-	//Draw shots
-	if (objects.ispicked() == 1) 
+	if (Player.isrolling() == 0) 
 	{
-		switch (objects.getid())
+		switch (Player.animm())
 		{
+		case 0:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rct, &rc);
+			rc.y += rc.h;
+			if (Player.extrafram() == 1)
+			{
+				Player.setanim(1);
+				Player.addframe(-5);
+			}
+			Player.addframe(1);
+			break;
 		case 1:
-			SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rct1, &rc);
+			rc.y += rc.h;
+
+			if (Player.extrafram() == 1)
+			{
+				Player.setanim(2);
+				Player.addframe(-5);
+			}
+			Player.addframe(1);
 			break;
 		case 2:
-			SDL_SetRenderDrawColor(Renderer, 255, 255, 0, 255);
-			break;
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 
+			SDL_RenderCopy(Renderer, img_player1_F1, &rct2, &rc);
+			rc.y += rc.h;
+
+			if (Player.extrafram() == 1)
+			{
+				Player.setanim(3);
+				Player.addframe(-5);
+			}
+			Player.addframe(1);
+			break;
+		case 3:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rct3, &rc);
+			rc.y += rc.h;
+
+			if (Player.extrafram() == 1)
+			{
+				Player.setanim(0);
+				Player.addframe(-5);
+			}
+			Player.addframe(1);
+			break;
 		default:
 
 			break;
@@ -380,93 +382,152 @@ void Game::Draw()
 	}
 	else 
 	{
-		SDL_SetRenderDrawColor(Renderer, 192, 0, 0, 255);
+		switch (objects.animm())
+		{
+		case 0:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rctroll, &rc);
+			rc.y += rc.h;
+			if (objects.extrafram() == 1)
+			{
+				objects.setanim(1);
+				objects.addframe(-30);
+			}
+			objects.addframe(1);
+			break;
+		case 1:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rct1roll, &rc);
+			rc.y += rc.h;
+
+			if (objects.extrafram() == 1)
+			{
+				objects.setanim(2);
+				objects.addframe(-30);
+			}
+			objects.addframe(1);
+			break;
+		case 2:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rct2roll, &rc);
+			rc.y += rc.h;
+
+			if (objects.extrafram() == 1)
+			{
+				objects.setanim(3);
+				objects.addframe(-30);
+			}
+			objects.addframe(1);
+			break;
+		case 3:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rct3roll, &rc);
+			rc.y += rc.h;
+
+			if (objects.extrafram() == 1)
+			{
+				objects.setanim(0);
+				objects.addframe(-30);
+			}
+			objects.addframe(1);
+			break;
+		default:
+
+			break;
+		}
 	}
 	
-
+	
+	
+	//Draw shots
 
 	for (int i = 0; i < MAX_SHOTS; ++i)
 	{
 		if (Shots[i].IsAlive())
 		{
 			Shots[i].GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-			SDL_RenderFillRect(Renderer, &rc);
+			SDL_Rect rct8{3532, 3534,122, 65};
+			SDL_Rect rct9{ 3563, 3633,198, 99 };
+			if (objects.ispicked() == 1)
+			{
+				switch (objects.getid())
+				{
+				case 1:
+					SDL_RenderCopy(Renderer, img_player1_F1, &rct9, &rc);
+					break;
+
+				default:
+
+					break;
+				}
+			}
+			else
+			{
+				SDL_RenderCopy(Renderer, img_player1_F1, &rct8, &rc);
+			}
 		}
 	}
 	//Draw player2
 	SDL_Rect rc2;
 	
-	
-	switch (Player2.animm())
-	{
-	case 0:
-		Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-
-		SDL_RenderCopy(Renderer, img_player1_F1, &rc2t, &rc);
-		rc.y += rc.h;
-		if (Player2.extrafram() == 1)
+	if (Player2.isrolling() == 0) {
+		switch (Player2.animm())
 		{
-			Player2.setanim(1);
-			Player2.addframe(-5);
-		}
-		Player2.addframe(1);
-		break;
-	case 1:
-		Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		case 0:
+			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 
-		SDL_RenderCopy(Renderer, img_player1_F1, &rc2t1, &rc);
-		rc.y += rc.h;
-
-		if (Player2.extrafram() == 1)
-		{
-			Player2.setanim(2);
-			Player2.addframe(-5);
-		}
-		Player2.addframe(1);
-		break;
-	case 2:
-		Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-
-		SDL_RenderCopy(Renderer, img_player1_F1, &rc2t2, &rc);
-		rc.y += rc.h;
-
-		if (Player2.extrafram() == 1)
-		{
-			Player2.setanim(3);
-			Player2.addframe(-5);
-		}
-		Player2.addframe(1);
-		break;
-	case 3:
-		Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-
-		SDL_RenderCopy(Renderer, img_player1_F1, &rc2t3, &rc);
-		rc.y += rc.h;
-
-		if (Player2.extrafram() == 1)
-		{
-			Player2.setanim(0);
-			Player2.addframe(-5);
-		}
-		Player2.addframe(1);
-		break;
-	default:
-
-		break;
-	}
-	//Draw shots2
-
-	if (objects2.ispicked() == 1)
-	{
-		switch (objects2.getid())
-		{
+			SDL_RenderCopy(Renderer, img_player1_F1, &rc2t, &rc);
+			rc.y += rc.h;
+			if (Player2.extrafram() == 1)
+			{
+				Player2.setanim(1);
+				Player2.addframe(-5);
+			}
+			Player2.addframe(1);
+			break;
 		case 1:
-			SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
+			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rc2t1, &rc);
+			rc.y += rc.h;
+
+			if (Player2.extrafram() == 1)
+			{
+				Player2.setanim(2);
+				Player2.addframe(-5);
+			}
+			Player2.addframe(1);
 			break;
 		case 2:
-			SDL_SetRenderDrawColor(Renderer, 255, 255, 0, 255);
-			break;
+			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 
+			SDL_RenderCopy(Renderer, img_player1_F1, &rc2t2, &rc);
+			rc.y += rc.h;
+
+			if (Player2.extrafram() == 1)
+			{
+				Player2.setanim(3);
+				Player2.addframe(-5);
+			}
+			Player2.addframe(1);
+			break;
+		case 3:
+			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rc2t3, &rc);
+			rc.y += rc.h;
+
+			if (Player2.extrafram() == 1)
+			{
+				Player2.setanim(0);
+				Player2.addframe(-5);
+			}
+			Player2.addframe(1);
+			break;
 		default:
 
 			break;
@@ -474,15 +535,92 @@ void Game::Draw()
 	}
 	else 
 	{
-		SDL_SetRenderDrawColor(Renderer, 192, 0, 255, 255);
+		switch (objects2.animm())
+		{
+		case 0:
+			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rctroll2, &rc);
+			rc.y += rc.h;
+			if (objects2.extrafram() == 1)
+			{
+				objects2.setanim(1);
+				objects2.addframe(-30);
+			}
+			objects2.addframe(1);
+			break;
+		case 1:
+			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rct1roll2, &rc);
+			rc.y += rc.h;
+
+			if (objects2.extrafram() == 1)
+			{
+				objects2.setanim(2);
+				objects2.addframe(-30);
+			}
+			objects2.addframe(1);
+			break;
+		case 2:
+			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rct2roll2, &rc);
+			rc.y += rc.h;
+
+			if (objects2.extrafram() == 1)
+			{
+				objects2.setanim(3);
+				objects2.addframe(-30);
+			}
+			objects2.addframe(1);
+			break;
+		case 3:
+			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rct3roll2, &rc);
+			rc.y += rc.h;
+
+			if (objects2.extrafram() == 1)
+			{
+				objects2.setanim(0);
+				objects2.addframe(-30);
+			}
+			objects2.addframe(1);
+			break;
+		default:
+
+			break;
+		}
 	}
-	 
+	//Draw shots2 
 	for (int i = 0; i < MAX_SHOTS2; ++i)
 	{
 		if (Shots2[i].IsAlive())
 		{
 			Shots2[i].GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
-			SDL_RenderFillRect(Renderer, &rc2);
+			SDL_Rect rct9{ 3349, 3533,126, 65 };
+			SDL_Rect rct10{ 3258, 3633,203, 96 };
+			if (objects2.ispicked() == 1)
+			{
+				switch (objects2.getid())
+				{
+				case 1:
+					SDL_RenderCopy(Renderer, img_player1_F1, &rct10, &rc2);
+					break;
+
+				case 2:
+					SDL_RenderCopy(Renderer, img_player1_F1, &rct10, &rc2);
+					break;
+				default:
+
+					break;
+				}
+			}
+			else
+			{
+				SDL_RenderCopy(Renderer, img_player1_F1, &rct9, &rc2);
+			}
 		}
 	}
 
@@ -532,7 +670,7 @@ void Game::Draw()
 	}
 
 	//check if player 2 gets shot
-	if (Shots[0].GetX() < Player2.GetX() + Player2.W() && Shots[0].GetX() + Shots[0].W() > Player2.GetX() && Shots[0].Y() < Player2.Y() + Player2.H() && Shots[0].Y() + Shots[0].H() > Player2.Y())
+	if (Shots[0].GetX() < Player2.GetX() + Player2.W() && Shots[0].GetX() + Shots[0].W() > Player2.GetX() && Shots[0].Y() < Player2.Y() + Player2.H() && Shots[0].Y() + Shots[0].H() > Player2.Y() && Player2.isrolling() == 0)
 	{
 		if (objects.ispicked() == 1)
 		{
@@ -689,6 +827,82 @@ void Game::Draw()
 
 	SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
 	SDL_RenderFillRect(Renderer, &rc4);
+
+	SDL_Rect rc15;
+
+	SDL_Rect rc151{1977, 3047, 273, 265};
+	SDL_Rect rc152{2379, 3047, 269, 271 };
+	SDL_Rect rc153{2739, 3047, 275, 271};
+	SDL_Rect rc154{1997, 3395, 271, 265};
+	SDL_Rect rc155{2395, 3397, 269, 269};
+	SDL_Rect rc156{2761, 3395, 271, 267};
+	SDL_Rect rc157{1977, 3691, 273, 269};
+
+	rounds1.GetRect(&rc15.x, &rc15.y, &rc15.w, &rc15.h);
+
+	switch (Player.getbullets())
+	{
+	case 0:
+		rounds1.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+		SDL_RenderCopy(Renderer, img_player1_F1, &rc151, &rc15);
+		rc.y += rc.h;
+		
+		
+		break;
+	case 1:
+		rounds1.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+		SDL_RenderCopy(Renderer, img_player1_F1, &rc152, &rc15);
+		rc.y += rc.h;
+
+		
+		break;
+	case 2:
+		rounds1.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+		SDL_RenderCopy(Renderer, img_player1_F1, &rc153, &rc15);
+		rc.y += rc.h;
+
+		
+		break;
+	case 3:
+		rounds1.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+		SDL_RenderCopy(Renderer, img_player1_F1, &rc154, &rc15);
+		rc.y += rc.h;
+
+		
+		break;
+
+	case 4:
+		rounds1.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+		SDL_RenderCopy(Renderer, img_player1_F1, &rc155, &rc15);
+		rc.y += rc.h;
+		break;
+
+	case 5:
+		rounds1.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+		SDL_RenderCopy(Renderer, img_player1_F1, &rc156, &rc15);
+		rc.y += rc.h;
+		break;
+
+	case 6:
+		rounds1.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+		SDL_RenderCopy(Renderer, img_player1_F1, &rc157, &rc15);
+		rc.y += rc.h;
+		break;
+	
+	default:
+
+		break;
+	}
+
+
+	
 
 	//Update screen
 	SDL_RenderPresent(Renderer);

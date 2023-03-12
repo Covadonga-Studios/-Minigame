@@ -12,6 +12,7 @@ Entity::~Entity()
 }
 void Entity::Init(int posx, int posy, int w, int h, int s) 
 {
+
 	x = posx;
 	y = posy;
 	width = w;
@@ -21,11 +22,12 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	hp = 10;
 	random1 = rand() % 100 + 10;
 	random2 = rand() % 100 + 10;
-	subrandom1 = rand() % 500 + 200;
+	subrandom1 = rand() % 450 + 200;
 	subrandom2 = rand() % 730 + 720;
 	anim = 0;
 	extraframe = -3;
 	roll = 0;
+	bullets = 0;
 }
 void Entity::GetRect(int *posx, int *posy, int *w, int *h)
 {
@@ -202,4 +204,12 @@ bool Entity::isrolling()
 void Entity::setroll(bool rolls) 
 {
 	roll = rolls;
+}
+void Entity::addbullets(int bullet) 
+{
+	bullets += bullet;
+}
+int Entity::getbullets()
+{
+	return bullets;
 }

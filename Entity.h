@@ -42,6 +42,8 @@ public:
 	int extrafram();
 	void setroll(bool rolls);
 	bool isrolling();
+	void addbullets(int bullet);
+	int getbullets();
 
 
 private:
@@ -62,5 +64,6 @@ private:
 	int anim;
 	int extraframe;
 	bool roll;
+	int bullets;
 };
 

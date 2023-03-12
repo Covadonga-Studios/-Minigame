@@ -37,7 +37,7 @@ public:
 private:
 	SDL_Window *Window;
 	SDL_Renderer *Renderer;
-	SDL_Texture* img_shot, * img_background, * img_player1_F1;/* * img_player1_F2, * img_player1_F3, * img_player1_F4, * img_player2_F1, * img_player2_F2, *img_player2_F3, *img_player2_F4;*/
+	SDL_Texture* img_shot, * img_background, * img_player1_F1;
 
 	Entity Player, Shots[MAX_SHOTS], Scene;
 	Entity Player2, Shots2[MAX_SHOTS2];
@@ -45,6 +45,8 @@ private:
 	Entity HP2;
 	Entity objects;
 	Entity objects2;
+	Entity rounds1;
+	Entity rounds2;
 	int idx_shot;
 	int idx_shot2;
 
