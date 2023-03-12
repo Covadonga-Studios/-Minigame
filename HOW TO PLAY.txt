@@ -1,0 +1,21 @@
+Player 1
+
+Movement: WASD
+Shoot:Space
+Dodge(2 sec cooldown): Q
+Reload: R
+
+
+
+Player 2
+
+Movement: Arrow keys
+Shoot:Right Shift
+Dodge(2 sec cooldown): P
+Reload: O
+
+
+
+Powerups
+Beer: Restores 1 HP
+Explosive bullet supply: Next bullet deals 2 damage
