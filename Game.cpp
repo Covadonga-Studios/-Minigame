@@ -95,6 +95,7 @@ bool Game::LoadAudios() {
 	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_powerup.wav");
 	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_reload.wav");
 	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_death.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_hitmarker.wav");
 	return true;
 }	
 
@@ -882,6 +883,7 @@ void Game::Draw()
 		}
 		else
 		{
+			Mix_PlayChannel(-1, sfxs[6], 0);
 			Player.redHP();
 		}
 		
@@ -915,6 +917,7 @@ void Game::Draw()
 		}
 		else 
 		{
+			Mix_PlayChannel(-1, sfxs[6], 0);
 			Player2.redHP();
 		}
 
