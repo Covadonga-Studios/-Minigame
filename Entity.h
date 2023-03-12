@@ -46,6 +46,8 @@ public:
 	int getbullets();
 	void setreload(bool is);
 	bool isreloading();
+	void setdeath(bool is);
+	bool isdead();
 
 
 private:
@@ -68,5 +70,6 @@ private:
 	bool roll;
 	int bullets;
 	bool reload;
+	bool death;
 };
 

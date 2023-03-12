@@ -29,6 +29,7 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	roll = 0;
 	bullets = 0;
 	reload = 0;
+	death = 0;
 }
 void Entity::GetRect(int *posx, int *posy, int *w, int *h)
 {
@@ -221,4 +222,12 @@ bool Entity::isreloading()
 void Entity::setreload(bool is) 
 {
 	reload = is;
+}
+void Entity::setdeath(bool is) 
+{
+	death = is;
+}
+bool Entity::isdead() 
+{
+	return death;
 }

@@ -174,21 +174,21 @@ bool Game::Update()
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
-	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 85 - Player.H() && Player.isrolling() == 0)	fy = -1;
-	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 980 - Player.H() && Player.isrolling() == 0)	fy = 1;
-	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 200 && Player.isrolling() == 0)	fx = -1;
-	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 580 - Player.W() && Player.isrolling() == 0)	fx = 1;
-	if (keys[SDL_SCANCODE_Q] == KEY_DOWN && Player.isrolling() == 0 && Player.timmer2() > 360) 
+	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 85 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0)	fy = -1;
+	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 980 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0)	fy = 1;
+	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 200 && Player.isrolling() == 0 && Player.isdead() == 0)	fx = -1;
+	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 580 - Player.W() && Player.isrolling() == 0 && Player.isdead() == 0)	fx = 1;
+	if (keys[SDL_SCANCODE_Q] == KEY_DOWN && Player.isrolling() == 0 && Player.timmer2() > 360 && Player.isdead() == 0)
 	{
 		Player.setroll(1);
 		Player.resettimer(2);
 	}
-	if (keys[SDL_SCANCODE_R] == KEY_DOWN && Player.getbullets() >= 6) 
+	if (keys[SDL_SCANCODE_R] == KEY_DOWN && Player.getbullets() >= 6 && Player.isdead() == 0)
 	{
 		Player.setreload(1);
 	}
 		
-	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN && Player.timer1() > 120 && Player.isrolling() == 0 && Player.getbullets() < 6 && Player.isreloading() == 0)
+	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN && Player.timer1() > 120 && Player.isrolling() == 0 && Player.getbullets() < 6 && Player.isreloading() == 0 && Player.isdead() == 0)
 	{
 		int x, y, w, h;
 		Player.GetRect(&x, &y, &w, &h);
@@ -231,21 +231,21 @@ bool Game::Update()
 //Process Input
 	int fx2 = 0, fy2 = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN )	return true;
-	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 85 - Player2.H() && Player2.isrolling() == 0)	fy2 = -1;
-	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 980 - Player2.H() && Player2.isrolling() == 0)	fy2 = 1;
-	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 965 && Player2.isrolling() == 0)	fx2 = -1;
-	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1280 && Player2.isrolling() == 0)fx2 = 1;
-	if (keys[SDL_SCANCODE_P] == KEY_DOWN && Player2.isrolling() == 0 && Player2.timmer2() > 360)
+	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 85 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0)	fy2 = -1;
+	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 980 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0)	fy2 = 1;
+	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 965 && Player2.isrolling() == 0 && Player2.isdead() == 0)	fx2 = -1;
+	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1280 && Player2.isrolling() == 0 && Player2.isdead() == 0)fx2 = 1;
+	if (keys[SDL_SCANCODE_P] == KEY_DOWN && Player2.isrolling() == 0 && Player2.timmer2() > 360 && Player2.isdead() == 0)
 	{
 		Player2.setroll(1);
 		Player2.resettimer(2);
 	}
-	if (keys[SDL_SCANCODE_O] == KEY_DOWN && Player2.getbullets() >= 6)
+	if (keys[SDL_SCANCODE_O] == KEY_DOWN && Player2.getbullets() >= 6 && Player2.isdead() == 0)
 	{
 		Player2.setreload(1);
 	}
 
-	if (keys[SDL_SCANCODE_RSHIFT] == KEY_DOWN && Player2.timer1() > 120 && Player2.isrolling() == 0 && Player2.getbullets() < 6 && Player2.isreloading() == 0)
+	if (keys[SDL_SCANCODE_RSHIFT] == KEY_DOWN && Player2.timer1() > 120 && Player2.isrolling() == 0 && Player2.getbullets() < 6 && Player2.isreloading() == 0 && Player2.isdead() == 0)
 	{
 		int x, y, w, h;
 		Player2.GetRect(&x, &y, &w, &h);
@@ -326,7 +326,7 @@ void Game::Draw()
 	
 	//Draw player1
 
-	if (Player.isrolling() == 0) 
+	if (Player.isrolling() == 0 && Player.isdead() == 0)
 	{
 		switch (Player.animm())
 		{
@@ -388,62 +388,65 @@ void Game::Draw()
 	}
 	else 
 	{
-		switch (objects.animm())
-		{
-		case 0:
-			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-
-			SDL_RenderCopy(Renderer, img_player1_F1, &rctroll, &rc);
-			rc.y += rc.h;
-			if (objects.extrafram() == 1)
+		
+		if (Player.isdead() == 0) {
+			switch (objects.animm())
 			{
-				objects.setanim(1);
-				objects.addframe(-30);
+			case 0:
+				Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+				SDL_RenderCopy(Renderer, img_player1_F1, &rctroll, &rc);
+				rc.y += rc.h;
+				if (objects.extrafram() == 1)
+				{
+					objects.setanim(1);
+					objects.addframe(-30);
+				}
+				objects.addframe(1);
+				break;
+			case 1:
+				Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+				SDL_RenderCopy(Renderer, img_player1_F1, &rct1roll, &rc);
+				rc.y += rc.h;
+
+				if (objects.extrafram() == 1)
+				{
+					objects.setanim(2);
+					objects.addframe(-30);
+				}
+				objects.addframe(1);
+				break;
+			case 2:
+				Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+				SDL_RenderCopy(Renderer, img_player1_F1, &rct2roll, &rc);
+				rc.y += rc.h;
+
+				if (objects.extrafram() == 1)
+				{
+					objects.setanim(3);
+					objects.addframe(-30);
+				}
+				objects.addframe(1);
+				break;
+			case 3:
+				Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+				SDL_RenderCopy(Renderer, img_player1_F1, &rct3roll, &rc);
+				rc.y += rc.h;
+
+				if (objects.extrafram() == 1)
+				{
+					objects.setanim(0);
+					objects.addframe(-30);
+				}
+				objects.addframe(1);
+				break;
+			default:
+
+				break;
 			}
-			objects.addframe(1);
-			break;
-		case 1:
-			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-
-			SDL_RenderCopy(Renderer, img_player1_F1, &rct1roll, &rc);
-			rc.y += rc.h;
-
-			if (objects.extrafram() == 1)
-			{
-				objects.setanim(2);
-				objects.addframe(-30);
-			}
-			objects.addframe(1);
-			break;
-		case 2:
-			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-
-			SDL_RenderCopy(Renderer, img_player1_F1, &rct2roll, &rc);
-			rc.y += rc.h;
-
-			if (objects.extrafram() == 1)
-			{
-				objects.setanim(3);
-				objects.addframe(-30);
-			}
-			objects.addframe(1);
-			break;
-		case 3:
-			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-
-			SDL_RenderCopy(Renderer, img_player1_F1, &rct3roll, &rc);
-			rc.y += rc.h;
-
-			if (objects.extrafram() == 1)
-			{
-				objects.setanim(0);
-				objects.addframe(-30);
-			}
-			objects.addframe(1);
-			break;
-		default:
-
-			break;
 		}
 	}
 	
@@ -477,10 +480,108 @@ void Game::Draw()
 			}
 		}
 	}
+
+	SDL_Rect rc2d{ 607,2051,293, 695};
+	SDL_Rect rc2d1{ 903,2017,267, 823 };
+	SDL_Rect rc2d2{ 1221,2015,269, 855 };
+	SDL_Rect rc2d3{ 613,2877,219, 873 };
+	SDL_Rect rc2d4{ 927,2889,209, 875 };
+	SDL_Rect rc2d5{ 1249,2889,227, 863 };
+
+
+	if (Player.isdead() == 1)
+	{
+		switch (HP1.animm())
+		{
+		case 0:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rc2d, &rc);
+			rc.y += rc.h;
+			if (HP1.extrafram() == 1)
+			{
+				HP1.setanim(1);
+				HP1.addframe(-30);
+			}
+			HP1.addframe(1);
+			break;
+		case 1:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rc2d1, &rc);
+			rc.y += rc.h;
+
+			if (HP1.extrafram() == 1)
+			{
+				HP1.setanim(2);
+				HP1.addframe(-30);
+			}
+			HP1.addframe(1);
+			break;
+		case 2:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rc2d2, &rc);
+			rc.y += rc.h;
+
+			if (HP1.extrafram() == 1)
+			{
+				HP1.setanim(3);
+				HP1.addframe(-30);
+			}
+			HP1.addframe(1);
+			break;
+		case 3:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rc2d3, &rc);
+			rc.y += rc.h;
+
+			if (HP1.extrafram() == 1)
+			{
+				HP1.setanim(4);
+				HP1.addframe(-30);
+			}
+			HP1.addframe(1);
+			break;
+		case 4:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rc2d4, &rc);
+			rc.y += rc.h;
+
+			if (HP1.extrafram() == 1)
+			{
+				HP1.setanim(5);
+				HP1.addframe(-90);
+			}
+			HP1.addframe(1);
+			break;
+		case 5:
+			Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rc2d5, &rc);
+			rc.y += rc.h;
+
+			if (HP1.extrafram() == 1)
+			{
+				SDL_Quit();
+			}
+			HP1.addframe(1);
+			break;
+
+		default:
+
+			break;
+		}
+	}
+
+
+
 	//Draw player2
 	SDL_Rect rc2;
 	
-	if (Player2.isrolling() == 0) {
+	if (Player2.isrolling() == 0 && Player2.isdead() == 0) {
 		switch (Player2.animm())
 		{
 		case 0:
@@ -540,65 +641,170 @@ void Game::Draw()
 		}
 	}
 	else 
+
 	{
-		switch (objects2.animm())
+		if (Player2.isdead() == 0) 
+		{
+			switch (objects2.animm())
+			{
+			case 0:
+				Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+				SDL_RenderCopy(Renderer, img_player1_F1, &rctroll2, &rc);
+				rc.y += rc.h;
+				if (objects2.extrafram() == 1)
+				{
+					objects2.setanim(1);
+					objects2.addframe(-30);
+				}
+				objects2.addframe(1);
+				break;
+			case 1:
+				Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+				SDL_RenderCopy(Renderer, img_player1_F1, &rct1roll2, &rc);
+				rc.y += rc.h;
+
+				if (objects2.extrafram() == 1)
+				{
+					objects2.setanim(2);
+					objects2.addframe(-30);
+				}
+				objects2.addframe(1);
+				break;
+			case 2:
+				Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+				SDL_RenderCopy(Renderer, img_player1_F1, &rct2roll2, &rc);
+				rc.y += rc.h;
+
+				if (objects2.extrafram() == 1)
+				{
+					objects2.setanim(3);
+					objects2.addframe(-30);
+				}
+				objects2.addframe(1);
+				break;
+			case 3:
+				Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+				SDL_RenderCopy(Renderer, img_player1_F1, &rct3roll2, &rc);
+				rc.y += rc.h;
+
+				if (objects2.extrafram() == 1)
+				{
+					objects2.setanim(0);
+					objects2.addframe(-30);
+				}
+				objects2.addframe(1);
+				break;
+			default:
+
+				break;
+			}
+		}
+
+	}
+
+	SDL_Rect rcd{ 4549,2207,301, 705};
+	SDL_Rect rcd1{ 4283,2183,270, 821 };
+	SDL_Rect rcd2{ 3965,2181,263, 857 };
+	SDL_Rect rcd3{ 4613,3043,227, 877 };
+	SDL_Rect rcd4{ 4309,3049,213, 875};
+	SDL_Rect rcd5{ 3967,3055,235, 863};
+		
+
+	if (Player2.isdead() == 1) 
+	{
+		switch (HP2.animm())
 		{
 		case 0:
 			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 
-			SDL_RenderCopy(Renderer, img_player1_F1, &rctroll2, &rc);
+			SDL_RenderCopy(Renderer, img_player1_F1, &rcd, &rc);
 			rc.y += rc.h;
-			if (objects2.extrafram() == 1)
+			if (HP2.extrafram() == 1)
 			{
-				objects2.setanim(1);
-				objects2.addframe(-30);
+				HP2.setanim(1);
+				HP2.addframe(-30);
+
+
+
+
 			}
-			objects2.addframe(1);
+			HP2.addframe(1);
 			break;
 		case 1:
 			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 
-			SDL_RenderCopy(Renderer, img_player1_F1, &rct1roll2, &rc);
+			SDL_RenderCopy(Renderer, img_player1_F1, &rcd1, &rc);
 			rc.y += rc.h;
 
-			if (objects2.extrafram() == 1)
+			if (HP2.extrafram() == 1)
 			{
-				objects2.setanim(2);
-				objects2.addframe(-30);
+				HP2.setanim(2);
+				HP2.addframe(-30);
 			}
-			objects2.addframe(1);
+			HP2.addframe(1);
 			break;
 		case 2:
 			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 
-			SDL_RenderCopy(Renderer, img_player1_F1, &rct2roll2, &rc);
+			SDL_RenderCopy(Renderer, img_player1_F1, &rcd2, &rc);
 			rc.y += rc.h;
 
-			if (objects2.extrafram() == 1)
+			if (HP2.extrafram() == 1)
 			{
-				objects2.setanim(3);
-				objects2.addframe(-30);
+				HP2.setanim(3);
+				HP2.addframe(-30);
 			}
-			objects2.addframe(1);
+			HP2.addframe(1);
 			break;
 		case 3:
 			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 
-			SDL_RenderCopy(Renderer, img_player1_F1, &rct3roll2, &rc);
+			SDL_RenderCopy(Renderer, img_player1_F1, &rcd3, &rc);
 			rc.y += rc.h;
 
-			if (objects2.extrafram() == 1)
+			if (HP2.extrafram() == 1)
 			{
-				objects2.setanim(0);
-				objects2.addframe(-30);
+				HP2.setanim(4);
+				HP2.addframe(-30);
 			}
-			objects2.addframe(1);
+			HP2.addframe(1);
 			break;
+		case 4:
+			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rcd4, &rc);
+			rc.y += rc.h;
+
+			if (HP2.extrafram() == 1)
+			{
+				HP2.setanim(5);
+				HP2.addframe(-90);
+			}
+			HP2.addframe(1);
+			break;
+		case 5:
+			Player2.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+
+			SDL_RenderCopy(Renderer, img_player1_F1, &rcd5, &rc);
+			rc.y += rc.h;
+
+			if (HP2.extrafram() == 1)
+			{
+				SDL_Quit();
+			}
+			HP2.addframe(1);
+			break;
+		
 		default:
 
 			break;
 		}
 	}
+
 	//Draw shots2 
 	for (int i = 0; i < MAX_SHOTS2; ++i)
 	{
@@ -632,13 +838,6 @@ void Game::Draw()
 
 	//Check collisions
 
-
-	//check if player1 and player2 collide
-	if (Player.GetX() < Player2.GetX() + Player2.W() && Player.GetX() + Player.W() > Player2.GetX() && Player.Y() < Player2.Y() + Player2.H() && Player.Y() + Player.H() > Player2.Y())
-	{
-		SDL_Quit();
-	}
-
 	//check if player1 gets shot
 	if (Player.GetX() < Shots2[0].GetX() + Shots2[0].W() && Player.GetX() + Player.W() > Shots2[0].GetX() && Player.Y() < Shots2[0].Y() + Shots2[0].H() && Player.Y() + Player.H() > Shots2[0].Y() && Player.isrolling() == 0)
 	{
@@ -670,7 +869,7 @@ void Game::Draw()
 		Shots2[0].Move(0, 1000);
 		if (Player.HP() <= 0)
 		{
-			SDL_Quit();
+			 Player.setdeath(1);
 		}
 
 	}
@@ -702,7 +901,7 @@ void Game::Draw()
 		Shots[0].Move(0, 1000);
 		if (Player2.HP() <= 0)
 		{
-			SDL_Quit();
+			Player2.setdeath(1);
 		}
 	}
 
@@ -786,7 +985,11 @@ void Game::Draw()
 			objects.pickedupp(1);
 			break;
 		case 2:
-			Player.addhp();
+			if (!Player.HP() < 4) 
+			{
+				Player.addhp();
+			}
+			
 			objects.pickedupp(0);
 			objects.setid();
 			break;
@@ -808,7 +1011,12 @@ void Game::Draw()
 			objects2.pickedupp(1);
 			break;
 		case 2:
-			Player2.addhp();
+			if (Player2.HP() < 4) 
+			{
+				Player2.addhp();
+			}
+				
+			
 			objects2.pickedupp(0);
 			objects2.setid();
 			break;
