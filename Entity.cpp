@@ -145,7 +145,16 @@ void Entity::resettimer(int timerr)
 }
 void Entity::setid() 
 {
-	objectid = rand() % 2 + 1;
+	int test = rand() % 100;
+	if (test < 50) 
+	{
+		objectid = 1;
+	}else if (test > 50) 
+	{
+		objectid = 2;
+	}
+
+	
 }
 
 int Entity::getid() 

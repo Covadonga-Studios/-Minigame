@@ -1,4 +1,2 @@
-﻿  Game.cpp
-C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Game.cpp(80,2): warning C4551: la llamada a la función no tiene lista de argumentos
-C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Game.cpp(81,2): warning C4551: la llamada a la función no tiene lista de argumentos
-  SpriteSDL.vcxproj -> C:\Users\ivomo\OneDrive\Documentos\GitHub\-Minigame\Debug\SpriteSDL.exe
+﻿  Entity.cpp
+  SpriteSDL.vcxproj -> C:\Users\pau\Desktop\-Minigame\-Minigame\Debug\SpriteSDL.exe

@@ -1,4 +1,4 @@
-Player 1
+Player 1:
 
 Movement: WASD
 Shoot:Space
@@ -7,7 +7,7 @@ Reload: R
 
 
 
-Player 2
+Player 2:
 
 Movement: Arrow keys
 Shoot:Right Shift
@@ -16,6 +16,7 @@ Reload: O
 
 
 
-Powerups
+Powerups:
+
 Beer: Restores 1 HP
-Explosive bullet supply: Next bullet deals 2 damage
+Explosive bullet supply: Next bullet deals 2 damage (or bullet midair)

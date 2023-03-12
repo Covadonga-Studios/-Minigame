@@ -48,6 +48,7 @@ public:
 	bool isreloading();
 	void setdeath(bool is);
 	bool isdead();
+	
 
 
 private:

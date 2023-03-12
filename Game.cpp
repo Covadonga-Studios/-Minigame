@@ -116,6 +116,11 @@ bool Game::LoadImages()
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
+	warning = SDL_CreateTextureFromSurface(Renderer, IMG_Load("warning.png"));
+	if (warning == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
 	
 	return true;
 }
@@ -126,6 +131,7 @@ void Game::Release()
 	SDL_DestroyTexture(img_shot);
 	SDL_DestroyTexture(img_background);
 	SDL_DestroyTexture(img_player1_F1);
+	SDL_DestroyTexture(warning);
 	
 	IMG_Quit();
 	
@@ -244,6 +250,9 @@ bool Game::Update()
 		}
 	}
 
+
+
+
 	//Player 2
 
 //Process Input
@@ -281,6 +290,7 @@ bool Game::Update()
 	if (Player2.timmer2() > 120 && Player2.isrolling() == 1)
 	{
 		Player2.setroll(0);
+
 	}
 
 	//Player2 update
@@ -724,6 +734,20 @@ void Game::Draw()
 			}
 		}
 
+	}
+		//create warning images
+
+	SDL_Rect rcwarn1{ 15, 550, 50, 100 };
+	SDL_Rect rcwarn2{ 1435, 550, 50, 100 };
+
+	if (Player.timmer2() < 360) 
+	{
+		SDL_RenderCopy(Renderer, warning, NULL, &rcwarn1);
+	}
+
+	if (Player2.timmer2() < 360)
+	{
+		SDL_RenderCopy(Renderer, warning, NULL, &rcwarn2);
 	}
 
 	SDL_Rect rcd{ 4549,2207,301, 705};
