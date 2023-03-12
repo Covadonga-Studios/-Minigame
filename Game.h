@@ -17,7 +17,7 @@
 #define MAX_KEYS		256
 #define MAX_SHOTS		1
 #define MAX_SHOTS2		1
-#define MAX_TRACKS		8
+#define MAX_TRACKS		64
 
 class Game
 {
@@ -57,7 +57,7 @@ private:
 	Mix_Music* tracks[MAX_TRACKS];
 	int num_tracks;
 
-	Mix_Chunk* sfxs[MAX_SHOTS];
+	Mix_Chunk* sfxs[MAX_TRACKS];
 	int num_sfxs;
 	
 };

@@ -85,12 +85,16 @@ bool Game::Init()
 
 bool Game::LoadAudios() {
 	num_tracks = 0;
-	tracks[num_tracks++] = Mix_LoadMUS("STK_western.ogg");
+	//tracks[num_tracks++] = Mix_LoadMUS("STK_western.ogg");
 
 	Mix_PlayMusic(tracks[0], -1);
 
-	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_shot.wav");
-
+	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_gunfire.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_dodge.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_beer.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_powerup.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_reload.wav");
+	sfxs[num_sfxs++] = Mix_LoadWAV("SFX_death.wav");
 	return true;
 }	
 
@@ -182,10 +186,13 @@ bool Game::Update()
 	{
 		Player.setroll(1);
 		Player.resettimer(2);
+		// Play a single Sound
+		Mix_PlayChannel(-1, sfxs[1], 0);
 	}
 	if (keys[SDL_SCANCODE_R] == KEY_DOWN && Player.getbullets() >= 6 && Player.isdead() == 0)
 	{
 		Player.setreload(1);
+		Mix_PlayChannel(-1, sfxs[4], 0);
 	}
 		
 	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN && Player.timer1() > 120 && Player.isrolling() == 0 && Player.getbullets() < 6 && Player.isreloading() == 0 && Player.isdead() == 0)
@@ -243,6 +250,7 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_O] == KEY_DOWN && Player2.getbullets() >= 6 && Player2.isdead() == 0)
 	{
 		Player2.setreload(1);
+		Mix_PlayChannel(-1, sfxs[4], 0);
 	}
 
 	if (keys[SDL_SCANCODE_RSHIFT] == KEY_DOWN && Player2.timer1() > 120 && Player2.isrolling() == 0 && Player2.getbullets() < 6 && Player2.isreloading() == 0 && Player2.isdead() == 0)
@@ -870,6 +878,7 @@ void Game::Draw()
 		if (Player.HP() <= 0)
 		{
 			 Player.setdeath(1);
+			 Mix_PlayChannel(-1, sfxs[5], 0);
 		}
 
 	}
@@ -901,7 +910,9 @@ void Game::Draw()
 		Shots[0].Move(0, 1000);
 		if (Player2.HP() <= 0)
 		{
+			
 			Player2.setdeath(1);
+			Mix_PlayChannel(-1, sfxs[5], 0);
 		}
 	}
 
@@ -983,15 +994,18 @@ void Game::Draw()
 		{
 		case 1:
 			objects.pickedupp(1);
+			Mix_PlayChannel(-1, sfxs[3], 0);
 			break;
 		case 2:
 			if (!Player.HP() < 4) 
 			{
 				Player.addhp();
+				
 			}
-			
+			Mix_PlayChannel(-1, sfxs[2], 0);
 			objects.pickedupp(0);
 			objects.setid();
+		
 			break;
 
 		default:
@@ -1009,13 +1023,14 @@ void Game::Draw()
 		{
 		case 1:
 			objects2.pickedupp(1);
+			Mix_PlayChannel(-1, sfxs[3], 0);
 			break;
 		case 2:
 			if (Player2.HP() < 4) 
 			{
 				Player2.addhp();
 			}
-				
+			Mix_PlayChannel(-1, sfxs[2], 0);
 			
 			objects2.pickedupp(0);
 			objects2.setid();
