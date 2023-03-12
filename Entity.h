@@ -44,6 +44,8 @@ public:
 	bool isrolling();
 	void addbullets(int bullet);
 	int getbullets();
+	void setreload(bool is);
+	bool isreloading();
 
 
 private:
@@ -65,5 +67,6 @@ private:
 	int extraframe;
 	bool roll;
 	int bullets;
+	bool reload;
 };
 

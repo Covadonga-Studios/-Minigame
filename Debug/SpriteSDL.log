@@ -1,4 +1,4 @@
 ﻿  Game.cpp
-C:\Users\pau\Desktop\-Minigame\-Minigame\Game.cpp(79,2): warning C4551: la llamada a la función no tiene lista de argumentos
 C:\Users\pau\Desktop\-Minigame\-Minigame\Game.cpp(80,2): warning C4551: la llamada a la función no tiene lista de argumentos
+C:\Users\pau\Desktop\-Minigame\-Minigame\Game.cpp(81,2): warning C4551: la llamada a la función no tiene lista de argumentos
   SpriteSDL.vcxproj -> C:\Users\pau\Desktop\-Minigame\-Minigame\Debug\SpriteSDL.exe

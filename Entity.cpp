@@ -19,7 +19,7 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	height = h;
 	speed = s;
 	is_alive = true;
-	hp = 10;
+	hp = 4;
 	random1 = rand() % 100 + 10;
 	random2 = rand() % 100 + 10;
 	subrandom1 = rand() % 450 + 200;
@@ -28,6 +28,7 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	extraframe = -3;
 	roll = 0;
 	bullets = 0;
+	reload = 0;
 }
 void Entity::GetRect(int *posx, int *posy, int *w, int *h)
 {
@@ -212,4 +213,12 @@ void Entity::addbullets(int bullet)
 int Entity::getbullets()
 {
 	return bullets;
+}
+bool Entity::isreloading() 
+{
+	return reload;
+}
+void Entity::setreload(bool is) 
+{
+	reload = is;
 }
