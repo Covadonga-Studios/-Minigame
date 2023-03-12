@@ -20,10 +20,10 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	speed = s;
 	is_alive = true;
 	hp = 4;
-	random1 = rand() % 100 + 10;
-	random2 = rand() % 100 + 10;
-	subrandom1 = rand() % 450 + 200;
-	subrandom2 = rand() % 730 + 720;
+	random1 = rand() % 1400 + 400;
+	random2 = rand() % 1400 + 400;
+	subrandom1 = rand() % 350 + 201;
+	subrandom2 = rand() % 730 + 670;
 	anim = 0;
 	extraframe = -3;
 	roll = 0;
@@ -79,8 +79,8 @@ bool Entity::IsAlive()
 }
 void Entity::Move(int dx, int dy)
 {
-	x += dx * speed;
-	y += dy * speed;
+	x += dx * (speed - reload *2);
+	y += dy * (speed - reload *2);
 }
 void Entity::SetX(int posx)
 {
@@ -127,7 +127,7 @@ int Entity::randoom2(int rando)
 	}
 	else
 	{
-		x = subrandom2;
+		x = subrandom1 + 720 ;
 		return x;
 	}
 }

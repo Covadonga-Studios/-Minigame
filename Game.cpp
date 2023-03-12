@@ -65,8 +65,8 @@ bool Game::Init()
 	idx_shot2 = 0;
 	objects.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
 	objects2.Init(1000, WINDOW_HEIGHT >> 5, 50, 50, 1);
-	rounds1.Init(50, 750, 100, 100, 1);
-	rounds2.Init(1350, 750, 100, 100, 1);
+	rounds1.Init(50, 650, 100, 100, 1);
+	rounds2.Init(1350, 650, 100, 100, 1);
 	objects.setid();
 	objects2.setid();
 	Player2.settimer(101);
@@ -85,7 +85,7 @@ bool Game::Init()
 
 bool Game::LoadAudios() {
 	num_tracks = 0;
-	//tracks[num_tracks++] = Mix_LoadMUS("STK_western.ogg");
+	tracks[num_tracks++] = Mix_LoadMUS("STK_western.ogg");
 
 	Mix_PlayMusic(tracks[0], -1);
 
@@ -178,18 +178,18 @@ bool Game::Update()
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
-	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 85 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0)	fy = -1;
-	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 980 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0)	fy = 1;
-	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 200 && Player.isrolling() == 0 && Player.isdead() == 0)	fx = -1;
-	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 580 - Player.W() && Player.isrolling() == 0 && Player.isdead() == 0)	fx = 1;
-	if (keys[SDL_SCANCODE_Q] == KEY_DOWN && Player.isrolling() == 0 && Player.timmer2() > 360 && Player.isdead() == 0)
+	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 85 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fy = -1;
+	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 980 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fy = 1;
+	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 200 && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fx = -1;
+	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 580 - Player.W() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fx = 1;
+	if (keys[SDL_SCANCODE_Q] == KEY_DOWN && Player.isrolling() == 0 && Player.timmer2() > 360 && Player.isdead() == 0 && Player2.isdead() == 0)
 	{
 		Player.setroll(1);
 		Player.resettimer(2);
 		// Play a single Sound
 		Mix_PlayChannel(-1, sfxs[1], 0);
 	}
-	if (keys[SDL_SCANCODE_R] == KEY_DOWN && Player.getbullets() >= 6 && Player.isdead() == 0)
+	if (keys[SDL_SCANCODE_R] == KEY_DOWN && Player.getbullets() >= 6 && Player.isdead() == 0 && Player2.isdead() == 0)
 	{
 		Player.setreload(1);
 		Mix_PlayChannel(-1, sfxs[4], 0);
@@ -215,8 +215,18 @@ bool Game::Update()
 	}
 	
 	//Scene scroll
-	Scene.Move(0, 2);
-	if (Scene.GetY() == Scene.H())	Scene.SetY(0);
+	
+	if (Player.isdead() == 1 || Player2.isdead() == 1) 
+	{
+		Scene.Move(0, 0);
+	}
+	else 
+	{
+		Scene.Move(0, 1);
+	}
+		
+		if (Scene.GetY() == Scene.H())	Scene.SetY(0);
+	
 	//Player update
 	Player.Move(fx, fy);
 	//Shots update
@@ -238,16 +248,17 @@ bool Game::Update()
 //Process Input
 	int fx2 = 0, fy2 = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN )	return true;
-	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 85 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0)	fy2 = -1;
-	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 980 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0)	fy2 = 1;
-	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 965 && Player2.isrolling() == 0 && Player2.isdead() == 0)	fx2 = -1;
-	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1280 && Player2.isrolling() == 0 && Player2.isdead() == 0)fx2 = 1;
-	if (keys[SDL_SCANCODE_P] == KEY_DOWN && Player2.isrolling() == 0 && Player2.timmer2() > 360 && Player2.isdead() == 0)
+	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 85 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fy2 = -1;
+	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 980 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fy2 = 1;
+	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 965 && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fx2 = -1;
+	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1280 && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)fx2 = 1;
+	if (keys[SDL_SCANCODE_P] == KEY_DOWN && Player2.isrolling() == 0 && Player2.timmer2() > 360 && Player2.isdead() == 0 && Player.isdead() == 0)
 	{
 		Player2.setroll(1);
 		Player2.resettimer(2);
+		Mix_PlayChannel(-1, sfxs[1], 0);
 	}
-	if (keys[SDL_SCANCODE_O] == KEY_DOWN && Player2.getbullets() >= 6 && Player2.isdead() == 0)
+	if (keys[SDL_SCANCODE_O] == KEY_DOWN && Player2.getbullets() >= 6 && Player2.isdead() == 0 && Player.isdead() == 0)
 	{
 		Player2.setreload(1);
 		Mix_PlayChannel(-1, sfxs[4], 0);
@@ -315,10 +326,6 @@ void Game::Draw()
 	SDL_Rect rct1roll2{ 4271,4927,523,997 };
 	SDL_Rect rct2roll2{ 3941,4105,363, 971 };
 	SDL_Rect rct3roll2{ 3383,4951,369, 953 };
-	//Scene scroll
-	Scene.Move(0, -1);
-	if (Scene.GetY() <= -Scene.H())	Scene.SetY(900);
-
 
 	//Set the color used for drawing operations
 	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
@@ -327,14 +334,18 @@ void Game::Draw()
 
 
 	//Draw scene
-	Scene.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
-	rc.y -= rc.h;
-	SDL_RenderCopy(Renderer, img_background, NULL, &rc);
+	if (Player.isdead() == 0 || Player2.isdead() == 0) 
+	{
+		Scene.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+		SDL_RenderCopy(Renderer, img_background, NULL, &rc);
+		rc.y -= rc.h;
+		SDL_RenderCopy(Renderer, img_background, NULL, &rc);
+	}
+	
 	
 	//Draw player1
 
-	if (Player.isrolling() == 0 && Player.isdead() == 0)
+	if (Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0 )
 	{
 		switch (Player.animm())
 		{
@@ -589,7 +600,7 @@ void Game::Draw()
 	//Draw player2
 	SDL_Rect rc2;
 	
-	if (Player2.isrolling() == 0 && Player2.isdead() == 0) {
+	if (Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0) {
 		switch (Player2.animm())
 		{
 		case 0:
@@ -997,10 +1008,9 @@ void Game::Draw()
 			Mix_PlayChannel(-1, sfxs[3], 0);
 			break;
 		case 2:
-			if (!Player.HP() < 4) 
+			if (Player.HP() < 4) 
 			{
 				Player.addhp();
-				
 			}
 			Mix_PlayChannel(-1, sfxs[2], 0);
 			objects.pickedupp(0);
@@ -1045,7 +1055,7 @@ void Game::Draw()
 	}
 	//HP bars
 
-	SDL_Rect rc3{ 30, 150, 150, 100 };
+	SDL_Rect rc3{ 30, 750, 150, 100 };
 	SDL_Rect rc31{ 1831, 1419, 501, 257};
 	SDL_Rect rc32{ 1833, 1743, 511, 249 };
 	SDL_Rect rc33{ 1833, 2045, 503, 249 };
@@ -1076,7 +1086,7 @@ void Game::Draw()
 
 	
 
-	SDL_Rect rc4{ 1330, 150, 150, 100};
+	SDL_Rect rc4{ 1330, 750, 150, 100};
 	SDL_Rect rc41{ 2711, 1419, 501, 287 };
 	SDL_Rect rc42{ 2711, 1743, 511, 289 };
 	SDL_Rect rc43{ 2711, 2045, 503, 289 };
