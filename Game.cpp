@@ -1038,7 +1038,7 @@ void Game::Draw()
 			Mix_PlayChannel(-1, sfxs[3], 0);
 			break;
 		case 2:
-			if (Player.HP() < 4) 
+			if (Player.HP() < 5) 
 			{
 				Player.addhp();
 			}
@@ -1066,7 +1066,7 @@ void Game::Draw()
 			Mix_PlayChannel(-1, sfxs[3], 0);
 			break;
 		case 2:
-			if (Player2.HP() < 4) 
+			if (Player2.HP() < 5) 
 			{
 				Player2.addhp();
 			}
