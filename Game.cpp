@@ -737,8 +737,8 @@ void Game::Draw()
 	}
 		//create warning images
 
-	SDL_Rect rcwarn1{ 15, 550, 50, 100 };
-	SDL_Rect rcwarn2{ 1435, 550, 50, 100 };
+	SDL_Rect rcwarn1{ 55, 550, 25, 100 };
+	SDL_Rect rcwarn2{ 1435, 550, 25, 100 };
 
 	if (Player.timmer2() < 360) 
 	{
@@ -839,6 +839,7 @@ void Game::Draw()
 			if (HP2.extrafram() == 1)
 			{
 				SDL_Quit();
+					
 			}
 			HP2.addframe(1);
 			break;
