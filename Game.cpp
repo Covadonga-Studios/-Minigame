@@ -185,7 +185,7 @@ bool Game::Update()
 	//Process Input
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
-	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 180 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fy = -1;
+	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 280 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fy = -1;
 	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 900 - Player.H() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fy = 1;
 	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 200 && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fx = -1;
 	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 580 - Player.W() && Player.isrolling() == 0 && Player.isdead() == 0 && Player2.isdead() == 0)	fx = 1;
@@ -258,7 +258,7 @@ bool Game::Update()
 //Process Input
 	int fx2 = 0, fy2 = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN )	return true;
-	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 180 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fy2 = -1;
+	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && Player2.GetY() > 280 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fy2 = -1;
 	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && Player2.GetY() < 900 - Player2.H() && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fy2 = 1;
 	if (keys[SDL_SCANCODE_LEFT]  == KEY_REPEAT && Player2.GetX() > 965 && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)	fx2 = -1;
 	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && Player2.GetX() < 1280 && Player2.isrolling() == 0 && Player2.isdead() == 0 && Player.isdead() == 0)fx2 = 1;
@@ -1014,7 +1014,7 @@ void Game::Draw()
 		objects.resettimer(1);
 			
 
-		objects.Init(300, WINDOW_HEIGHT >> 5, 50, 50, 1);
+		objects.Init(300,-50, 50, 50, 1);
 	}
 
 	if (objects2.GetY() > 1020) 
@@ -1022,7 +1022,7 @@ void Game::Draw()
 		objects2.resettimer(0);
 		
 
-		objects2.Init(1000, WINDOW_HEIGHT >> 5, 50, 50, 1);
+		objects2.Init(1000, -50, 50, 50, 1);
 		
 	}
 

@@ -1,2 +1,4 @@
-﻿  Entity.cpp
-  SpriteSDL.vcxproj -> C:\Users\pau\Desktop\-Minigame\-Minigame\Debug\SpriteSDL.exe
+﻿  Game.cpp
+C:\Users\paums3\Documents\GitHub\-Minigame\Game.cpp(80,2): warning C4551: function call missing argument list
+C:\Users\paums3\Documents\GitHub\-Minigame\Game.cpp(81,2): warning C4551: function call missing argument list
+  SpriteSDL.vcxproj -> C:\Users\paums3\Documents\GitHub\-Minigame\Debug\SpriteSDL.exe
